@@ -8,14 +8,21 @@ const logger = require('koa-logger')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
+const error = require("./routes/views/error")
+const {middlewareError,middleware404} = require("./middleware/error")
 
-// error handler
-onerror(app)
 
-// middlewares
+//发生错误跳到error路由
+let errconfig = {
+  redirect:"/error"
+}
+onerror(app,errconfig)
+
+// middlewares post json
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
+
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
@@ -24,17 +31,17 @@ app.use(views(__dirname + '/views', {
   extension: 'ejs'
 }))
 
-// logger
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-})
+//404 和 错误中间件
+// app.use(middlewareError);
+// app.use(middleware404);
+
+
 
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(error.routes(), error.allowedMethods())
+
 
 // error-handling
 app.on('error', (err, ctx) => {

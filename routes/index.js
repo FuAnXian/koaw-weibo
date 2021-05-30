@@ -7,7 +7,9 @@ router.get('/', async (ctx, next) => {
 })
 
 router.get('/string', async (ctx, next) => {
+  throw new Error("测试");
   ctx.body = 'koa2 string'
+  console.log("2")
 })
 
 router.get('/json', async (ctx, next) => {
