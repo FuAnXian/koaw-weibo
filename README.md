@@ -22,3 +22,5 @@ npm i mysql2 sequelize -S orm框架
 ## inspect
 inspect 在 package 运行 --inspect
 
+## redis 
+npm i redis koa-reids koa-generice --save
