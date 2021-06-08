@@ -2,8 +2,8 @@
 const isProdcution = process.env.NODE_ENV == 'production';
 
 let MYSQL = {
-  password: "123456",
-  user: "root",
+  password: "329285015",
+  user: "fax",
   database: "koa2-weibo",
   conf: {
     dialectOptions:{ //时间格式化

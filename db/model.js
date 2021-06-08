@@ -55,9 +55,12 @@ Users.hasMany(Blogs,{
   foreignKey:"userId"
 });
 
+let force = true;
 //不加！号就错误 =>同步模型
 (async ()=>{
-  await sequelize.sync()
+  await sequelize.sync({
+    force
+  })
 })();
 
 
