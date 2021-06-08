@@ -1,16 +1,29 @@
 <!-- 头部 -->
-<%- include("../layout/header.ejs") %>
+<%- include("../layout/header.ejs",{
+  hideNav:true
+}) %>
 
-  <div class="text-center align-middle">
-   <div class="mt-5">
-    <h1>500</h1>
-   </div> 
-   <div class="alert alert-warning mb-2 mt-2">
-    <strong>发生未知错误: <%= error %> </strong> 
+<style>
+  html,body{
+    background-color: #f1f1f1;
+  }
+</style>
+<div class="d-flex mt-5">
+  <div class="col-md-6 col-lg-4 mt-5 col-sm-10 mx-auto">
+   <div class="my-5">
+    <img src="/img/bg500.png" alt="">
+   </div>
+   <div class="h3 my-5 text-center">
+        <div class="alert alert-danger">
+          <strong>发生未知错误!</strong> <%- locals.msg %>
+        </div>
+   </div>
+   <div style="width:250px" class="mx-auto">
+     <a href="/" class="btn btn-block btn-dark">
+       返回首页
+     </a>
+   </div>
   </div>
-    <a  class="btn btn-primary" href="/">
-      返回首页
-    </a>
-  </div>
+</div>
   <!-- 尾部 -->
   <%- include("../layout/footer.ejs") %>

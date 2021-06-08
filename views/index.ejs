@@ -1,12 +1,30 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>EJS Welcome to <%= title %></p>
-    <%- include("./components/button.ejs",{title}) %> 
-  </body>
-</html>
+<!-- 头部 -->
+<%- include("./layout/header.ejs") %>
+
+  <div class="d-flex p-3">
+    <div class="col-8">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="media">
+            <img src="https://static.runoob.com/images/mobile-icon.png" class="align-self-start mr-3" style="width:35px">
+            <div class="media-body">
+              <div class="my-1 h5"><strong>标题</strong></div>
+              <div class="media my-2">
+                <div class="media-body">     
+                  <p>学的不仅是技术，更是梦想！！！</p>      
+                </div>
+                <img src="https://static.runoob.com/images/mobile-icon.png" alt="图片"
+                 class="ml-3 mt-3 rounded-circle" style="width:100px;">
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">Third item</li>
+      </ul>
+    </div>
+    <div class="col-4">
+ 
+    </div>
+  </div>
+
+  <%- include("./layout/footer.ejs") %>

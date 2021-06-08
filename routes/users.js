@@ -1,13 +1,15 @@
 const router = require('koa-router')()
 
-router.prefix('/users')
 
-router.get('/', function (ctx, next) {
-  ctx.body = 'this is a users response!'
+
+
+//用户相关页面
+router.get('/login', async (ctx, next)=> {
+  await ctx.render("views/login",{})
 })
 
-router.get('/bar', function (ctx, next) {
-  ctx.body = 'this is a users/bar response'
+router.get('/register', async (ctx, next)=> {
+  await ctx.render("views/register",{})
 })
 
 module.exports = router

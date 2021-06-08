@@ -11,8 +11,7 @@ const session = require("koa-generic-session");
 //路由
 const index = require('./routes/index')
 const users = require('./routes/users')
-const error = require("./routes/views/error")
-const {middlewareError,middleware404} = require("./middleware/error")
+const {middlewareError} = require("./middleware/error")
 
 //配置
 const {REDIS} = require("./config/index")
@@ -21,7 +20,9 @@ const {REDIS} = require("./config/index")
 let errconfig = {
   redirect:"/error"
 }
-onerror(app,errconfig)
+onerror(app)
+app.use(middlewareError)
+
 
 // middlewares post json
 app.use(bodyparser({
@@ -60,7 +61,7 @@ app.use(views(__dirname + '/views', {
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
-app.use(error.routes(), error.allowedMethods())
+
 
 
 // error-handling

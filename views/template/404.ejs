@@ -1,16 +1,28 @@
 <!-- 头部 -->
-<%- include("../layout/header.ejs") %>
-
-  <div class="text-center align-middle">
-   <div class="mt-5">
-    <i style="font-size:20rem;" class="icon-404"></i>
-   </div> 
-   <div class="alert alert-warning mb-2 mt-2">
-    <strong><%= title %> </strong> 
-  </div>
-    <a  class="btn btn-primary" href="/">
-      返回首页
-    </a>
+<%- include("../layout/header.ejs",{
+  hideNav:true
+}) %>
+  <style>
+  
+  </style>
+  <div class="d-flex mt-5">
+    <div class="col-md-6 col-lg-4 mt-5 col-sm-10 mx-auto">
+     <div class="my-5">
+      <img src="/img/bg404.png" alt="">
+     </div>
+     <div class="h3 my-5 text-center">
+ 
+      <div class="alert alert-info">
+        <strong class="h4">对不起你访问的页面不存在!</strong><%- locals.msg %>
+      </div>
+          
+     </div>
+     <div style="width:250px" class="mx-auto">
+       <a href="/" class="btn btn-block btn-dark">
+         返回首页
+       </a>
+     </div>
+    </div>
   </div>
   <!-- 尾部 -->
   <%- include("../layout/footer.ejs") %>
