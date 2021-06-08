@@ -10,7 +10,6 @@ router.get('/string', async (ctx, next) => {
   let num = ++ctx.session.num || 0 
   console.log(ctx.session)
   console.log(ctx.cookie)
-
   ctx.body = 'koa2 string'+ num
 
 })

@@ -10,7 +10,7 @@ const session = require("koa-generic-session");
 
 //路由
 const index = require('./routes/index')
-const users = require('./routes/users')
+const users = require('./routes/views/users')
 const {middlewareError} = require("./middleware/error")
 
 //配置
