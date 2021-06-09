@@ -1,7 +1,5 @@
 <!-- 头部 -->
-<%- include("../layout/header.ejs",{
-    hideNav:true
-}) %>
+<%- include("../layout/header.ejs",{ hideNav:true }) %>
     <style>
         .body {
             width: 100%;
@@ -13,20 +11,24 @@
             background-position: center;
             margin: 0;
         }
+
         .container-fluid {
             padding: 0;
         }
+
         .content {
             background-color: #fff;
             margin: 0 auto;
             max-width: 800px;
             border-radius: 10px;
         }
+
         .login {
             width: 350px;
         }
+
         @media (max-width:576px) {
-            .login{
+            .login {
                 width: 100%;
                 min-width: 300px;
             }
@@ -43,24 +45,23 @@
                     <form action="" class="mt-2">
                         <div class="form-group">
                             <label for="user">账号</label>
-                            <input type="text" id="text" class="form-control is-invalid"  placeholder="输入账号" />
-                            <div class="invalid-feedback">
-                                失败
+                            <input type="text" id="user" class="form-control" placeholder="输入账号" />
+                            <div class="">
+
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="password">密码</label>
-                            <input type="password" id="password" class="form-control is-valid" placeholder="输入密码" />
-                            <div class="valid-feedback">
-                               验证成功
-                              </div>
+                            <input type="password" id="password" class="form-control" placeholder="输入密码" />
+                            <div class="">
+
+                            </div>
                             <div class="d-flex mt-1 flex-row-reverse">
-                                <a href="/register" class="text-primary"> <small>立即注册</small> </a> 
-                             </div>
+                                <a href="/register" class="text-primary"> <small>立即注册</small> </a>
+                            </div>
                         </div>
-                      
                         <div class="form-group mt-4">
-                           <button type="submit" class="btn btn-primary btn-block">登录</button>
+                            <button type="button" id="submit" class="btn btn-primary btn-block">登录</button>
                         </div>
                     </form>
                 </div>
@@ -70,16 +71,48 @@
 
 
     <script>
-        $(function(){
-           
-           
-            $axios({
-                method:"post",
-                data:{},
-                url:"/json",
-                loading:true
-            }).then(res =>{
-                console.log(res)
+        $(function () {
+            let isUser = true;
+            let isPassword = true;
+            $("#user").on("blur", function () {
+                isUser = /.{2,20}/.test($(this).val())
+                if (isUser) {
+                    $("#user").removeClass("is-invalid").addClass("is-valid")
+                        .next().removeClass("invalid-feedback").addClass("valid-feedback")
+                        .text("")
+                } else {
+                    $("#user").removeClass("is-valid").addClass("is-invalid")
+                        .next().removeClass("valid-feedback").addClass("invalid-feedback")
+                        .text("请输入2到20位数账号")
+                }
+            })
+
+            $("#password").on("blur", function () {
+                isPassword = /[0-9a-zA-z]{6,12}/.test($(this).val())
+                if (isPassword) {
+                    $("#password").removeClass("is-invalid").addClass("is-valid")
+                        .next().removeClass("invalid-feedback").addClass("valid-feedback")
+                        .text("")
+                } else {
+                    $("#password").removeClass("is-valid").addClass("is-invalid")
+                        .next().removeClass("valid-feedback").addClass("invalid-feedback")
+                        .text("请输入6到12字母或者数字")
+                }
+            })
+
+            $("#submit").on("click", async function () {
+                if (isPassword && isUser) {
+                    let { code, msg } = await $axios({
+                        method: "post",
+                        data: {
+                            userName:$("#user").val(),
+                            password:$("#password").val()
+                        },
+                        url: "/api/users/login",
+                        loading: true
+                    });
+                    console.log(code)
+                }
             })
         })
     </script>

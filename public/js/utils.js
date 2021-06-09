@@ -30,6 +30,27 @@
                 fn.bind(this,...arguments)
             },delay);
         }
+    };
+
+    owner.showInfo = function({msg,duration,status}){
+      $("#info")?.remove();
+       $("body").append(`
+       <div id="info">
+       <div class="alert alert-${status || 'success'} h5">
+          ${msg||'成功'}
+       </div>
+     </div>
+       `);
+
+       duration  = duration || 1500
+        $("#info").slideDown();
+        setTimeout(()=>{
+            this.hideInfo()
+        },duration)
+    };
+
+    owner.hideInfo = function(){
+        $("#info").slideUp()
     }
 
 })(window.utils = {})

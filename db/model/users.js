@@ -19,7 +19,13 @@ Users.init({
     allowNull: false,
     unique:true,
     validate:{
-      len:[2,20]
+      len:{
+        args:[2,20],
+        msg:"请输入2到20位数的账号"
+      },
+      notNull: {
+        msg: '请输入你的账号'
+      }
     },
     comment:"用户名称 (唯一)"
   },
@@ -27,7 +33,13 @@ Users.init({
     type: DataTypes.STRING,
     allowNull: false,
     validate:{
-      is:/^\w{6,16}/i
+      is:{
+        args:[/[0-9a-zA-z]{6,16}/],
+        msg:"请输入6到12数字或者字母的密码"
+      },
+      notNull: {
+        msg: '请输入你的密码'
+      }
     },
     comment:"用户密码"
   },

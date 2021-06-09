@@ -13,7 +13,7 @@ const sequelize = require("../db");
 //同步表
 !(async ()=>{
     await sequelize.sync({
-        force:true
+        force:false
     })
 })()
 

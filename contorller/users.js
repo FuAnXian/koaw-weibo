@@ -39,8 +39,6 @@ const isExistUser = async (userName)=>{
   if(info){
       return new ModelError(isExistUser);
   }
-  console.log("info",info)
-  console.log(new ModelSuccess())
   return new ModelSuccess()
 };
 
@@ -53,15 +51,17 @@ const isExistUser = async (userName)=>{
  * @return {body} ModelSuccess
  */
 const registerUser = async({userName,password,gender=3})=>{
+   
    let params = Object.assign({
         proFile:static.PROFLE, //默认头像
    },{userName,password,gender});
    
     try{
         let res = await Users.create(params);
-        return new ModelSuccess(suc)
+        return new ModelSuccess({msg:"注册成功！"})
     }catch(e){
-        return new ModelError({msg:e})
+       console.log(e)
+        return new ModelError({msg:e.errors[0].message})
     }
 }
 

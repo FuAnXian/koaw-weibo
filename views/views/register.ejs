@@ -7,9 +7,7 @@
  * @LastEditTime: 2021-06-09 17:40:04
 -->
 <!-- 头部 -->
-<%- include("../layout/header.ejs",{
-    hideNav:true
-}) %>
+<%- include("../layout/header.ejs",{ hideNav:true }) %>
     <style>
         .body {
             width: 100%;
@@ -32,11 +30,13 @@
             max-width: 800px;
             border-radius: 10px;
         }
+
         .login {
             width: 350px;
         }
+
         @media (max-width:576px) {
-            .login{
+            .login {
                 width: 100%;
                 min-width: 300px;
             }
@@ -47,19 +47,19 @@
             <div class="d-flex border content mx-auto  p-md-5 p-4">
                 <div class="login d-flex  flex-sm-grow-1 flex-column">
                     <h1 class="h2 text-center">Hi! 欢迎注册</h1>
-                    <form action="#"  class="mt-2">
+                    <form action="#" class="mt-2">
                         <div class="form-group">
                             <strong class="text-danger">*</strong> <label for="user">账号</label>
-                            <input type="text" id="user" class="form-control"  placeholder="输入账号" />
-                            <div class="invalid-feedback">
+                            <input type="text" id="user" class="form-control" placeholder="输入账号" />
+                            <div class="">
                                 <div class="msg"></div>
                             </div>
                         </div>
-                       
+
                         <div class="form-group">
                             <strong class="text-danger">*</strong> <label for="password">密码</label>
                             <input type="password" id="password" class="form-control" placeholder="输入密码" />
-                            <div class="invalid-feedback">
+                            <div class="">
                                 <div class="msg"></div>
                             </div>
                         </div>
@@ -67,31 +67,37 @@
                         <div class="form-group">
                             <strong class="text-danger">*</strong> <label for="password1">确认</label>密码</label>
                             <input type="password" id="password1" class="form-control" placeholder="输入密码" />
+                            <div class="">
+                                <div class="msg"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="user">性别</label>
                             <div class="d-flex justify-content-between">
                                 <div class="custom-control  custom-radio">
-                                    <input type="radio" class="custom-control-input" id="gender0" name="example1" value="customEx">
+                                    <input type="radio" class="custom-control-input" id="gender0" name="example1"
+                                        value="1">
                                     <label class="custom-control-label" for="gender0">女</label>
-                                  </div>
-                                  <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="gender1" name="example1" value="customEx">
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="gender1" name="example1"
+                                        value="2">
                                     <label class="custom-control-label" for="gender1">男</label></label>
-                                  </div>
-                                  <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="gender2" name="example1" value="customEx">
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" checked id="gender2"
+                                        name="example1" value="3">
                                     <label class="custom-control-label" for="gender2">保密</label>
-                                  </div>
+                                </div>
                             </div>
                         </div>
-                        <hr/>
+                        <hr />
                         <div class="d-flex flex-row-reverse">
-                            <a href="/login" class="text-primary"><small>返回登录</small> </a> 
-                         </div>
+                            <a href="/login" class="text-primary"><small>返回登录</small> </a>
+                        </div>
                         <div class=" mt-3">
-                           <button type="button" id="submit" class="btn btn-primary btn-block">确 认</button>
+                            <button type="button" id="submit" class="btn btn-primary btn-block">确 认</button>
                         </div>
                     </form>
                 </div>
@@ -99,61 +105,108 @@
         </div>
     </div>
     <script>
-        $(function(){
-            
-            //是否存在用户
-            let isExistUser = utils.debounce(async(value)=>{
-                let userDom = $("#user");
-                let {code,msg} = await $axios({
-                    url:"api/users/isExistUser",
-                    data:{
-                        userName:value
-                    },
-                    loading:false,
-                    method:"POST"
-                })
-               let {valid,invalid,unvalid,uninvalid} = validClass(code == 1);
-                userDom.removeClass(unvalid).addClass(valid);
-                userDom.next().removeClass(invalid).addClass(uninvalid).find(".msg").text(msg)
-            },500);
-           
+        $(function () {
 
+            //是否存在用户
+            let isExistUser = utils.debounce(async (value) => {
+                let userDom = $("#user");
+                let { code, msg } = await $axios({
+                    url: "api/users/isExistUser",
+                    data: {
+                        userName: value
+                    },
+                    loading: false,
+                    method: "POST"
+                })
+                let { valid, invalid, unvalid, uninvalid } = validClass(code == 1);
+                userDom.removeClass(unvalid).addClass(valid);
+                userDom.next().removeClass(invalid).addClass(uninvalid).find(".msg").text(code == 1 ? "" : msg)
+            }, 500);
+
+            let userVaild = false;
             //用户输入判断
-            $("#user").on("input",function(){
-                isExistUser($(this).val());
+            $("#user").on("input", function () {
+                userVaild = /.{2,20}/.test($(this).val())
+                if(userVaild){
+                    isExistUser($(this).val());
+                }else{
+                    $("#user").removeClass("is-valid").addClass("is-invalid")
+                   .next().removeClass("valid-feedback").addClass("invalid-feedback")
+                   .find(".msg").text("请输入6到12位数的账号")
+                }              
             });
 
             //提交注册
-            $("#submit").on("click",async function(){
+            $("#submit").on("click", async function () {
                 let pas = $("#password").val();
                 let pas1 = $("#password1").val();
-                let test = /^\w{6,16}/;
+                let test = /[0-9a-zA-z]{6,16}/;
+                let isPas = test.test(pas);
+                let isPas1 = test.test(pas1);
                 
-                console.log(test.test(pas))
-                if(!test.test(pas)){
-                    let {valid,invalid,unvalid,uninvalid} = validClass(false);
-                    $("#password")
+                if(!userVaild) {$("#user").trigger("input"); return;};
+                //判断第一个密码
+                var { valid, invalid, unvalid, uninvalid } = validClass(isPas);
+                $("#password")
                     .removeClass(unvalid)
                     .addClass(valid)
                     .next()
                     .removeClass(uninvalid)
                     .addClass(invalid)
-                    .find(".msg").text("请输入由字母数字下划线组成的6-16数")
+                    .find(".msg").text(isPas ? "" : "请输入由字母数字下划线组成的6-16数")
+                if (!isPas) return;
+
+                //判断第二个密码
+                var { valid, invalid, unvalid, uninvalid } = validClass(isPas1);
+                $("#password1")
+                    .removeClass(unvalid)
+                    .addClass(valid)
+                    .next()
+                    .removeClass(uninvalid)
+                    .addClass(invalid)
+                    .find(".msg").text(isPas1 ? "" : "请输入由字母数字下划线组成的6-16数")
+                if (!isPas1) return;
+
+                if (pas !== pas1) {
+                    var { valid, invalid, unvalid, uninvalid } = validClass(false);
+                    $("#password1")
+                        .removeClass(unvalid)
+                        .addClass(valid)
+                        .next()
+                        .removeClass(uninvalid)
+                        .addClass(invalid)
+                        .find(".msg").text("两次密码不一致！")
+                }
+
+                let data = {
+                    userName: $("#user").val(),
+                    password: pas,
+                    gender: $("input[type='radio']:checked").val()
                 };
-                if(test.test(pas1)){
- 
-                };
-                if(pas !== pas1){
-                  
+                let { msg, code, } = await $axios({
+                    url: "/api/users/register",
+                    data,
+                    method: "POST"
+                })
+                let isSUc = code == 1;
+                let info = {
+                    status: isSUc ? "success" : "danger",
+                    msg: isSUc ? '恭喜你注册成功！' : msg
+                }
+                utils.showInfo(info);
+                if (isSUc) {
+                    setTimeout(function () {
+                        location.href = "/login"
+                    }, 1500)
                 }
             })
-           
 
-         function  validClass(is){
+
+            function validClass(is) {
                 let valid = is ? "is-valid" : "is-invalid";
-                let invalid = is ?  "valid-feedback" : "invalid-feedback" ;
+                let invalid = is ? "valid-feedback" : "invalid-feedback";
                 let unvalid = !is ? "is-valid" : "is-invalid";
-                let uninvalid = !is ? "invalid-feedback" : "valid-feedback";
+                let uninvalid = !is ? "valid-feedback" : "invalid-feedback";
                 return {
                     valid,
                     invalid,

@@ -7,10 +7,7 @@
  * @LastEditTime: 2021-06-09 17:35:15
  */
 
-const codes = {
-  1:"获取成功",
-  0:"出现错误"
-}
+
 
 class BaseModel {
   constructor({data="",code=1,msg=""})

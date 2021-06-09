@@ -22,7 +22,9 @@ router.post('/login', async (ctx, next)=> {
 
 //注册
 router.post('/register', async (ctx, next)=> {
-  await ctx.render("views/register",{})
+  const data = ctx.request.body;
+  console.log(data)
+  ctx.body = await registerUser(data);
 })
 
 //用户是否存在
