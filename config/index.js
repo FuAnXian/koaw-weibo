@@ -1,10 +1,18 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-06-08 09:28:37
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-06-09 10:22:42
+ */
 
 const isProdcution = process.env.NODE_ENV == 'production';
 
 let MYSQL = {
   password: "329285015",
   user: "fax",
-  database: "koa2-weibo",
+  database: "koa2weibo",
   conf: {
     dialectOptions:{ //时间格式化
         dateStrings: true,
@@ -15,8 +23,16 @@ let MYSQL = {
     dialect: "mysql",// 数据库类型,
     logging:()=>{} //不打印sql语句日志
   }
-}
+};
+let REDIS = {
+  port:6379,
+  host:"127.0.0.1",
+  expire: 1000 * 60 *60 *24
+};
 
+const static = {
+  PROFLE:"/img/touxiang.jpg"
+};
 //生产环境
 if (isProdcution) {
   MYSQL.conf = {
@@ -31,15 +47,12 @@ if (isProdcution) {
   }
 }
 
-let REDIS = {
-   port:6379,
-   host:"127.0.0.1",
-   expire: 1000 * 60 *60 *24
-}
+
 
 
 module.exports = {
   MYSQL,
   REDIS,
-  isProdcution
+  isProdcution,
+  static
 }

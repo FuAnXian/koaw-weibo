@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-06-09 08:59:02
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-06-09 17:35:15
+ */
 
 const codes = {
   1:"获取成功",
@@ -5,7 +13,7 @@ const codes = {
 }
 
 class BaseModel {
-  constructor(data=null,code=1,msg="")
+  constructor({data="",code=1,msg=""})
   {
       this.data = data;
       this.code = code,
@@ -14,14 +22,28 @@ class BaseModel {
 }
 
 class ModelSuccess extends BaseModel{
-  constructor(data,code,msg = "获取成功"){
-    super(data,code,msg);
+  constructor(obj={}){
+
+   let params = Object.assign({
+      code:1,
+      data:"",
+      msg: "获取成功"
+    },obj);
+
+    super(params);
   }
 }
 
 class ModelError extends BaseModel{
-  constructor(data,code,msg = "获取失败"){
-    super(data,code,msg);
+  constructor(obj={}){
+
+   let params = Object.assign({
+    code:-1,
+    data:"",
+    msg: "获取失败"
+  },obj);
+
+    super(params);
   }
 }
 

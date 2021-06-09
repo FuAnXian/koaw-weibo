@@ -1,7 +1,15 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-06-08 09:37:19
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-06-09 17:04:04
+ */
 (function (axios) {
     var config = {
         method: 'POST',
-        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        headers: { 'content-type': 'application/json;charset=utf-8' },
         data: {},
         url: "/",
         loading:true

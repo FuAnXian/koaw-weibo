@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-06-08 09:28:37
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-06-09 16:54:48
+ */
 
 //错误
 const middlewareError = async (ctx, next) => {
@@ -15,6 +23,12 @@ const middlewareError = async (ctx, next) => {
   if(ctx.status === 404){
     await ctx.render("template/404", {
       msg: ""
+    })
+  }
+  
+  if(ctx.status === 500){
+    await ctx.render("template/error", {
+      msg: ctx.response.message
     })
   }
 }

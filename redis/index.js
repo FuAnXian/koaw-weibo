@@ -9,9 +9,9 @@ redisClient.on("error",err =>{
 
 /**
  * 设置redis数据
- * @param {string} 属性 
- * @param {any} value 
- * @param {number} 过期时间 秒 
+ * @key {string} 属性 
+ * @value {any} value 
+ * @timeout {number} 过期时间 秒 
  */
 const set = (key,value,timeout = 60 * 60)=>{
   if(value.constructor.name === 'Object'){
@@ -23,7 +23,7 @@ const set = (key,value,timeout = 60 * 60)=>{
 
 /**
  * 获取redis缓存数据
- * @param {string} key 
+ * @key {string} key 
  */
 const get = (key)=>{
   return new Promise((resolve,reject)=>{

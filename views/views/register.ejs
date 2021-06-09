@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-06-08 11:06:27
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-06-09 17:40:04
+-->
 <!-- 头部 -->
 <%- include("../layout/header.ejs",{
     hideNav:true
@@ -10,6 +18,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             overflow: hidden;
+            background-position: center;
             margin: 0;
         }
 
@@ -38,15 +47,21 @@
             <div class="d-flex border content mx-auto  p-md-5 p-4">
                 <div class="login d-flex  flex-sm-grow-1 flex-column">
                     <h1 class="h2 text-center">Hi! 欢迎注册</h1>
-                    <form action="" class="mt-2">
+                    <form action="#"  class="mt-2">
                         <div class="form-group">
                             <strong class="text-danger">*</strong> <label for="user">账号</label>
-                            <input type="text" id="text" class="form-control"  placeholder="输入账号" />
+                            <input type="text" id="user" class="form-control"  placeholder="输入账号" />
+                            <div class="invalid-feedback">
+                                <div class="msg"></div>
+                            </div>
                         </div>
                        
                         <div class="form-group">
                             <strong class="text-danger">*</strong> <label for="password">密码</label>
                             <input type="password" id="password" class="form-control" placeholder="输入密码" />
+                            <div class="invalid-feedback">
+                                <div class="msg"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -76,11 +91,76 @@
                             <a href="/login" class="text-primary"><small>返回登录</small> </a> 
                          </div>
                         <div class=" mt-3">
-                           <button type="submit" class="btn btn-primary btn-block">确 认</button>
+                           <button type="button" id="submit" class="btn btn-primary btn-block">确 认</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        $(function(){
+            
+            //是否存在用户
+            let isExistUser = utils.debounce(async(value)=>{
+                let userDom = $("#user");
+                let {code,msg} = await $axios({
+                    url:"api/users/isExistUser",
+                    data:{
+                        userName:value
+                    },
+                    loading:false,
+                    method:"POST"
+                })
+               let {valid,invalid,unvalid,uninvalid} = validClass(code == 1);
+                userDom.removeClass(unvalid).addClass(valid);
+                userDom.next().removeClass(invalid).addClass(uninvalid).find(".msg").text(msg)
+            },500);
+           
+
+            //用户输入判断
+            $("#user").on("input",function(){
+                isExistUser($(this).val());
+            });
+
+            //提交注册
+            $("#submit").on("click",async function(){
+                let pas = $("#password").val();
+                let pas1 = $("#password1").val();
+                let test = /^\w{6,16}/;
+                
+                console.log(test.test(pas))
+                if(!test.test(pas)){
+                    let {valid,invalid,unvalid,uninvalid} = validClass(false);
+                    $("#password")
+                    .removeClass(unvalid)
+                    .addClass(valid)
+                    .next()
+                    .removeClass(uninvalid)
+                    .addClass(invalid)
+                    .find(".msg").text("请输入由字母数字下划线组成的6-16数")
+                };
+                if(test.test(pas1)){
+ 
+                };
+                if(pas !== pas1){
+                  
+                }
+            })
+           
+
+         function  validClass(is){
+                let valid = is ? "is-valid" : "is-invalid";
+                let invalid = is ?  "valid-feedback" : "invalid-feedback" ;
+                let unvalid = !is ? "is-valid" : "is-invalid";
+                let uninvalid = !is ? "invalid-feedback" : "valid-feedback";
+                return {
+                    valid,
+                    invalid,
+                    unvalid,
+                    uninvalid
+                }
+            }
+        })
+    </script>
     <%- include("../layout/footer.ejs") %>
