@@ -3,7 +3,7 @@
  * @Author: fax
  * @Date: 2021-06-09 10:26:26
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 14:51:49
+ * @LastEditTime: 2021-06-10 16:49:44
  */
 
 const router = require('koa-router')();
@@ -41,9 +41,18 @@ router.post('/register', async (ctx, next)=> {
 
 //用户是否存在
 router.post('/isExistUser', async (ctx, next)=> {
-    console.log(2)
     let {userName} = ctx.request.body;
     ctx.body = await isExistUser(userName);
+})
+
+//退出登录
+router.post("/signOut",async (ctx,next)=>{
+      
+})
+
+//编辑用户
+router.post("/updateUser",async (ctx,next)=>{
+      
 })
 
 module.exports = router

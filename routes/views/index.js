@@ -4,7 +4,7 @@
  * @Author: fax
  * @Date: 2021-06-09 08:59:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-09 10:37:38
+ * @LastEditTime: 2021-06-10 16:25:17
  */
 
 
@@ -22,6 +22,10 @@ router.get('/login', async (ctx, next)=> {
 
 router.get('/register', async (ctx, next)=> {
   await ctx.render("views/register",{})
+})
+
+router.get('/userInfo', async (ctx, next)=> {
+  await ctx.render("views/userInfo",{})
 })
 
 module.exports = router

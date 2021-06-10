@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-08 09:28:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 15:26:34
+ * @LastEditTime: 2021-06-10 16:27:41
  */
 const Koa = require('koa')
 const app = new Koa()
@@ -17,13 +17,12 @@ const koaRedis = require("koa-redis");
 const session = require("koa-generic-session");
 
 //路由
-const index = require('./routes/index')
-const users = require('./routes/views/users')
+const index = require('./routes/views/index')
 const {middlewareError} = require("./middleware/error")
 
 
 //api
-const ApiUsers = require('./routes/api/users')
+const ApiUsers = require('./routes/api/users');
 
 //配置
 const {REDIS} = require("./config/index")
@@ -63,7 +62,6 @@ app.use(views(__dirname + '/views', {
 
 // routes
 app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
 app.use(ApiUsers.routes(),ApiUsers.allowedMethods())
 
 
