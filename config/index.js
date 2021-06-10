@@ -49,8 +49,6 @@ if (isProdcution) {
 }
 
 
-
-
 module.exports = {
   MYSQL,
   REDIS,

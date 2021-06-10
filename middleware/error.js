@@ -18,7 +18,6 @@ const middlewareError = async (ctx, next) => {
       msg: err
     })
   }
-  
   //处理404
   if(ctx.status === 404){
     await ctx.render("template/404", {

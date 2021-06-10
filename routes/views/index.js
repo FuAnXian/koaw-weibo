@@ -8,13 +8,16 @@
  */
 
 
-const router = require('koa-router')()
+const router = require('koa-router')();
+const {viewLoginCheck} = require("../../middleware/loginCheck")
 const {
   registerUser,
   isExistUser
 }  = require("../../contorller/users");
 
-
+router.get('/', viewLoginCheck,async (ctx, next)=> {
+  await ctx.render("index",{})
+})
 
 router.get('/login', async (ctx, next)=> {
   await ctx.render("views/login",{})
@@ -27,5 +30,6 @@ router.get('/register', async (ctx, next)=> {
 router.get('/userInfo', async (ctx, next)=> {
   await ctx.render("views/userInfo",{})
 })
+
 
 module.exports = router

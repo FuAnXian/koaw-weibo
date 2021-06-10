@@ -56,9 +56,9 @@ const registerUser = async ({ userName, password, gender = 3 }) => {
         proFile: static.PROFLE, //默认头像
     }, { userName, password, gender });
     try {
-        let res = await Users.create(params);
+        await Users.create(params);
         return new ModelSuccess({ msg: "注册成功！" })
-    } catch (e) {
+    } catch (e) {          
         return new ModelSeqError(e)
     }
 }
@@ -74,7 +74,9 @@ const userLogin = async (ctx, userName, password) => {
         return new ModelError({ msg: userName ? "密码不能为空" : "账号不能为空" });
     }
     let info = await getUserInfo({ userName, password });
+   
     if (info != null) {
+        console.log(info)
         ctx.session.userInfo = info;
         return new ModelSuccess({ msg: "登录成功" })
     }

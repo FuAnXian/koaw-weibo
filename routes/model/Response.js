@@ -57,8 +57,8 @@ class ModelError extends BaseModel{
 class ModelSeqError extends BaseModel{
   constructor(e){
     let msg = e.errors ? (e.errors[0] ? e.errors[0].message : (e.name || "出现未知错误！")) : e;
-    if(e  instanceof UniqueConstraintError){
-        return new ModelError({msg:"此用户已存在！"})
+    if(e instanceof UniqueConstraintError){
+      msg = "此用户已存在！";
     }
    super({msg,code:-1,data:""})
   }
