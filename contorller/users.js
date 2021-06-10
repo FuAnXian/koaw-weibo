@@ -3,9 +3,10 @@
  * @version: 
  * @Author: fax
  * @Date: 2021-06-09 09:24:45
- * @LastEditTime: 2021-06-09 17:28:55
+ * @LastEditTime: 2021-06-10 15:17:21
  */
 const {Users} = require("../db/model/index");
+const { sequlizeError} = require("./sequelizeError")
 const {ModelError,ModelSuccess} = require("../routes/model/Response");
 const {static} = require("../config/index")
 const {
@@ -22,10 +23,11 @@ const {
  * @userName {string}  用户姓名
  * @return {Object} 用户信息 | null
  */
-const getUserInfo = async({userName,password="",nickName=""})=>{
+const getUserInfo = async(where)=>{
     return await Users.findOne({
-        attributes:{exclude: ['id']},
-        where:{userName,password,nickName}
+        attributes:{exclude: ['password']},
+        where:where,
+        raw:true
     })
 }
 
@@ -51,22 +53,38 @@ const isExistUser = async (userName)=>{
  * @return {body} ModelSuccess
  */
 const registerUser = async({userName,password,gender=3})=>{
-   
    let params = Object.assign({
         proFile:static.PROFLE, //默认头像
-   },{userName,password,gender});
-   
+   },{userName,password,gender});  
     try{
         let res = await Users.create(params);
         return new ModelSuccess({msg:"注册成功！"})
     }catch(e){
-       console.log(e)
-        return new ModelError({msg:e.errors[0].message})
+        return sequlizeError(e)
     }
+}
+
+/**
+ * 用户登录
+ * @ctx {Object} 中间件上下文
+ * @userName {string} 用户账号
+ * @password {string} 用户密码
+ */
+const userLogin  = async (ctx,userName,password)=>{
+   if(userName == "" && password == ""){
+        return new ModelError({msg:userName ? "密码不能为空" : "账号不能为空"});
+   }
+   let info = await getUserInfo({userName,password});
+   if(info != null){
+       ctx.session.userInfo = info;
+       return new ModelSuccess({msg:"登录成功"})
+   }
+   return new ModelError({msg:"账号或密码不正确！"});
 }
 
 module.exports = {
     isExistUser,
     getUserInfo,
-    registerUser
+    registerUser,
+    userLogin
 }

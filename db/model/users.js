@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-09 08:59:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-09 17:24:58
+ * @LastEditTime: 2021-06-10 14:43:26
  */
 const { Model, DataTypes } = require("sequelize")
 const sequelize = require("../db");
@@ -25,7 +25,7 @@ Users.init({
       },
       notNull: {
         msg: '请输入你的账号'
-      }
+      },
     },
     comment:"用户名称 (唯一)"
   },
@@ -35,7 +35,7 @@ Users.init({
     validate:{
       is:{
         args:[/[0-9a-zA-z]{6,16}/],
-        msg:"请输入6到12数字或者字母的密码"
+        msg:"请输入6到16数字或者字母的密码"
       },
       notNull: {
         msg: '请输入你的密码'

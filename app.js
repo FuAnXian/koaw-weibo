@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-08 09:28:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-09 17:02:02
+ * @LastEditTime: 2021-06-10 15:26:34
  */
 const Koa = require('koa')
 const app = new Koa()
@@ -40,8 +40,8 @@ app.use(middlewareError)
 app.use(koaBody())
 app.keys = ["HSFS$_dd##@@sddssd155"];
 app.use(session({
-  key:"sid", //客户端cookie属性
-  prefix:"weibo:", //redis key前缀
+  key:"sid", //客户端cookie属性key
+  prefix:"weibo:", //redis key前缀 (redis key == weibo加上客户端cookie的sid值)
   cookie:{
     path:"/",
     httpOnly:true, //只能服务端修改cookie

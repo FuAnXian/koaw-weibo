@@ -72,8 +72,8 @@
 
     <script>
         $(function () {
-            let isUser = true;
-            let isPassword = true;
+            let isUser = false;
+            let isPassword = false;
             $("#user").on("blur", function () {
                 isUser = /.{2,20}/.test($(this).val())
                 if (isUser) {
@@ -101,6 +101,8 @@
             })
 
             $("#submit").on("click", async function () {
+                $("#password").trigger('blur');
+                $("#user").trigger('blur');
                 if (isPassword && isUser) {
                     let { code, msg } = await $axios({
                         method: "post",
@@ -109,9 +111,15 @@
                             password:$("#password").val()
                         },
                         url: "/api/users/login",
-                        loading: true
+                        loading: false
                     });
-                    console.log(code)
+                    utils.showInfo({
+                        status:code == 1 ? "success" : "danger",
+                        msg
+                    })
+                    if(code == 1){
+                        setTimeout(()=>{location.href = "/"},1000);
+                    }
                 }
             })
         })

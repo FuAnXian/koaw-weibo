@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-08 09:28:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-09 10:22:42
+ * @LastEditTime: 2021-06-10 10:09:40
  */
 
 const isProdcution = process.env.NODE_ENV == 'production';
@@ -31,6 +31,7 @@ let REDIS = {
 };
 
 const static = {
+  CRYPTOKEY:"SD%$DSDS_())DDSSD!",
   PROFLE:"/img/touxiang.jpg"
 };
 //生产环境

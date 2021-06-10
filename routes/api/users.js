@@ -3,36 +3,47 @@
  * @Author: fax
  * @Date: 2021-06-09 10:26:26
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-09 17:23:03
+ * @LastEditTime: 2021-06-10 14:51:49
  */
 
-const router = require('koa-router')()
+const router = require('koa-router')();
+const {decrypt,encrypto} = require("../../utils/encrypt");
+
 const {
   registerUser,
-  isExistUser
+  isExistUser,
+  userLogin
 }  = require("../../contorller/users");
 
 router.prefix("/api/users")
 
+
+//加密密码
+router.use("/",async(ctx,next)=>{
+  let password = ctx.request.body.password
+  if(password){
+    ctx.request.body.password = encrypto(password)
+  }
+  await next()
+})
+
 //登录
 router.post('/login', async (ctx, next)=> {
   let {userName,password} = ctx.request.body;
-  await ctx.render("views/login",{})
+  ctx.body = await userLogin(ctx,userName,password);
 })
 
 //注册
 router.post('/register', async (ctx, next)=> {
   const data = ctx.request.body;
-  console.log(data)
   ctx.body = await registerUser(data);
 })
 
 //用户是否存在
 router.post('/isExistUser', async (ctx, next)=> {
+    console.log(2)
     let {userName} = ctx.request.body;
-    console.log(ctx.request.body)
-    
     ctx.body = await isExistUser(userName);
-  })
+})
 
 module.exports = router
