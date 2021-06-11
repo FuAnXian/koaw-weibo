@@ -1,10 +1,11 @@
+
 /*
  * @Descripttion: 
  * @version: 
  * @Author: sueRimn
  * @Date: 2021-06-08 09:37:19
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-09 17:04:04
+ * @LastEditTime: 2021-06-11 14:50:34
  */
 (function (axios) {
     var config = {
@@ -17,6 +18,13 @@
     axios.interceptors.response.use(response => {
         //关闭loading
         $("#loading").fadeOut();
+        if(response.data.code == -1){
+            utils.showInfo({
+                status:"warning",
+                msg:response.data.msg
+            })
+            return Promise.reject(response.data)
+        }
         return response.data
     },
     error => {

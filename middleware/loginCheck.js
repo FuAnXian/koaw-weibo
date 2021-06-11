@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-06-11 09:06:55
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-06-11 09:10:58
+ */
 const {ModelError} = require("../routes/model/Response");
 
 //排除登录和注册页校验
@@ -27,9 +35,10 @@ const apiLoginCheck = async (ctx,next)=>{
  * @param {object} ctx 
  * @param {function} next 
  */
-const viewLoginCheck= async (ctx,next)=>{
+const viewLoginCheck = async (ctx,next)=>{
   let length = ctx.url.indexOf("?");
   let url = length != -1 ? ctx.url.substring(0,length) : ctx.url;
+  console.log(url)
   if(exclude.includes(url) || ctx.session.userInfo){
     await next()
   }else{

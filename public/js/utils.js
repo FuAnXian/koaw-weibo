@@ -4,7 +4,7 @@
  * @Author: fax
  * @Date: 2021-06-09 11:01:41
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-09 17:20:29
+ * @LastEditTime: 2021-06-11 15:02:55
  */
 
 !(function(owner){
@@ -41,7 +41,6 @@
        </div>
      </div>
        `);
-
        duration  = duration || 1500
         $("#info").slideDown();
         setTimeout(()=>{

@@ -3,7 +3,7 @@
  * @version: 
  * @Author: fax
  * @Date: 2021-06-09 09:24:45
- * @LastEditTime: 2021-06-10 17:03:36
+ * @LastEditTime: 2021-06-11 16:58:30
  */
 const { Users } = require("../db/model/index");
 const { ModelError, ModelSuccess , ModelSeqError} = require("../routes/model/Response");
@@ -12,6 +12,7 @@ const {
     existUser,
     suc
 } = require("../routes/model/code");
+const { use } = require("../app");
 
 
 /**
@@ -76,38 +77,60 @@ const userLogin = async (ctx, userName, password) => {
     let info = await getUserInfo({ userName, password });
    
     if (info != null) {
-        console.log(info)
         ctx.session.userInfo = info;
         return new ModelSuccess({ msg: "登录成功" })
     }
     return new ModelError({ msg: "账号或密码不正确！" });
 }
 
+
 /**
  * 修改用户信息
- * @param {object} 修改内容
- * @return {*} Model
+ * @param {object} ctx 上下文对象 
+ * @param {string} userName 用户账号
+ * @param {string} nickName 用户昵称
+ * @param {Number} gender 用户性别
+ * @param {string} proFile 用户头像
+ * @param {string} city 用户城市
+ * @param {string} password 用户密码
  */
-const updateUser = async (params) => {
-    if (typeof params == "object" && !params.id) {
-        try {
-            await Users.update(params, {
-                where: {
-                    id: params.id
-                }
-            })
-            return new ModelSuccess({msg:"编辑成功！"})
-        } catch (e) {
-            return new ModelSeqError(e)
-        }
-    } else {
-        return new ModelError({ msg: "缺少参数！" })
+ const updateUserInfo = async (ctx,{userName,nickName,gender,proFile,city,password})=>{
+     let data = {
+        userName,
+        nickName,
+        gender:+gender,
+        proFile,
+        city,
+        password
+      };
+
+    if(userName == "" || !userName){
+      return new ModelError({msg:"账号不能为空！"})
+    };
+    
+    //密码为空则不修改
+    if(!password || password==""){
+      delete data.password
+    };
+
+    if(city == "" || !city){
+        delete data.city
     }
-}
+    
+    try{
+        let res =  await Users.update(data,{
+            where:{id:ctx.session.userInfo.id}
+        })
+        ctx.session.userInfo = await getUserInfo({userName});
+        return new ModelSuccess({msg:"修改成功！"})
+    }catch(e){
+      return new ModelSeqError(e)
+    }
+  }
 module.exports = {
     isExistUser,
     getUserInfo,
     registerUser,
     userLogin,
-    updateUser
+    updateUserInfo
 }

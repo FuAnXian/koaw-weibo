@@ -3,7 +3,7 @@
  * @Author: fax
  * @Date: 2021-06-09 10:26:26
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 16:49:44
+ * @LastEditTime: 2021-06-11 16:43:21
  */
 
 const router = require('koa-router')();
@@ -12,7 +12,8 @@ const {apiLoginCheck} = require("../../middleware/loginCheck")
 const {
   registerUser,
   isExistUser,
-  userLogin
+  userLogin,
+  updateUserInfo
 }  = require("../../contorller/users");
 
 router.prefix("/api/users")
@@ -32,6 +33,9 @@ router.post('/login', async (ctx, next)=> {
   ctx.body = await userLogin(ctx,userName,password);
 })
 
+router.get("/test",async(ctx,next)=>{
+  ctx.body = {code:1,data:{},msg:"成功"}
+})
 //注册
 router.post('/register', async (ctx, next)=> {
   const data = ctx.request.body;
@@ -51,7 +55,8 @@ router.post("/signOut",async (ctx,next)=>{
 
 //编辑用户
 router.post("/updateUser",async (ctx,next)=>{
-      
+      const body = ctx.request.body; 
+      ctx.body = await updateUserInfo(ctx,body)
 })
 
 module.exports = router

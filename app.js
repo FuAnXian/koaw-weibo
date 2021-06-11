@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-08 09:28:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 16:27:41
+ * @LastEditTime: 2021-06-11 14:07:03
  */
 const Koa = require('koa')
 const app = new Koa()
@@ -23,6 +23,7 @@ const {middlewareError} = require("./middleware/error")
 
 //api
 const ApiUsers = require('./routes/api/users');
+const ApiUpload = require("./routes/api/upload");
 
 //配置
 const {REDIS} = require("./config/index")
@@ -63,7 +64,7 @@ app.use(views(__dirname + '/views', {
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(ApiUsers.routes(),ApiUsers.allowedMethods())
-
+app.use(ApiUpload.routes(),ApiUpload.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

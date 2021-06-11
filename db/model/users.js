@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-09 08:59:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 14:43:26
+ * @LastEditTime: 2021-06-11 16:49:22
  */
 const { Model, DataTypes } = require("sequelize")
 const sequelize = require("../db");
@@ -48,7 +48,7 @@ Users.init({
     allowNull: true,
     comment:"别名",
     validate:{
-      len:[2,20]
+      len:[0,20]
     }
   },
   gender:{

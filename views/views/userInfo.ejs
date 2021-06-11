@@ -4,18 +4,194 @@
  * @Author: fax
  * @Date: 2021-06-10 16:20:13
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 16:34:42
+ * @LastEditTime: 2021-06-11 17:20:36
 -->
 <style>
-    .container{
-        border-radius: 10px;
+    form {
+        border-radius: 5px;
         background-color: white;
+    }
+    label{
+        margin-right: 15px;
+    }
+    .form-group > label {
+        white-space: nowrap;
+        margin-bottom: 0 !important;
+       
+        line-height: 38px;
     }
 </style>
 <!-- 头部 -->
 <%- include("../layout/header.ejs") %>
-<div class="container">
+    <div class="container px-md-0 px-2">
+        <form  class="mt-0 mt-md-4 py-md-4 py-2 px-md-4  px-2" id="form">
+            <div class="h5">头像</div>
+            <hr />
+            <div class="ml-3 ">
+                <div class="form-group d-flex align-items-center">
+                    <label for="userName">头&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;像:</label>
+                    <div class="rounded-circle" style="width:60px;height:60px;overflow: hidden;">
+                        <img src="<%= userInfo.proFile%>" alt="" id="imghead">
+                    </div>
+                    <div id="upload">
+                        <button  type="button" class="btn btn-info btn-sm ml-3">更换头像</button>
+                          <input type="file" accept="image/*"  id="File">
+                    </div>
+                  
+                        
+                 
+                    <input type="text" name="proFile" value="<%= userInfo.proFile%>" class="d-none" id="proFile">
+                </div>
+            </div>
+            <div class="h5 ">个人信息</div>
+            <hr />
+            <div class="ml-3">
+                <div class="form-group d-flex ">
+                    <label for="userName">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</label>
+                    <div class=" flex-fill">
+                        <input type="text"  class="form-control" maxlength="16" placeholder="输入您的账号"
+                        value="<%= userInfo.userName%>" name="userName" id="userName" />
+                          <div class="invalid-feedback">
+                            请输入2到16位数的账号
+                          </div>
+                    </div>
+                   
+                </div>
+                <div class="form-group d-flex align-items-center">
+                    <label for="city">城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;市:</label>
+                    <input id="city" value="<%= userInfo.city || ''%>" name="city" type="text" class="form-control" list="browsers" name="browser">
+                    <datalist id="browsers">
+                       <% citys.forEach(item=> {%>
+                        <option value="<%= item.citysName%>">
+                       <% })%>
+                    </datalist>
+                </div>
+                <div class="form-group d-flex align-items-center">
+                    <label for="nickName">呢&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:</label>
+                    <input type="text" value="<%= userInfo.nickName %>" name="nickName" class="form-control flex-fill" maxlength="16" placeholder="输入您的呢称"
+                        id="nickName" />
+                </div>
+
+                <div class="form-group d-flex align-items-center">
+                    <label for="user">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:</label>
+                    <div class="d-flex justify-content-between">
+                        <% genders.forEach((item,index)=>{%>
+                        <div class="custom-control  custom-radio">
+
+                            <%if(index+1 == userInfo.gender){%>
+                                  <input type="radio" class="custom-control-input" checked id="gender<%= index %>" name="gender" value="<%= index+1 %>">
+                            <%}else{%>
+                                <input type="radio" class="custom-control-input"  id="gender<%= index %>" name="gender" value="<%= index+1 %>">
+                             <%}%>
+
+                            <label class="custom-control-label" for="gender<%= index%>"><%= item %></label>
+                        </div>
+                        <%})%>
+                       
+                    </div>
+                </div>
+                <div class="form-group d-flex ">
+                    <label for="password">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+                    <input type="password" name="password" class="form-control  flex-fill" maxlength="16" placeholder="输入您的新密码"
+                        id="password" />
+                </div>
+                <div class="form-group d-flex ">
+                    <label for="password1">确认密码:</label>
+                    <div class=" flex-fill">
+                        <input type="password" class="form-control " maxlength="16" placeholder="再次确认您的密码"
+                        id="password1" />
+                        <div class="invalid-feedback">
+                            两次密码不一致
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="form-gruop d-flex justify-content-between pb-2 pb-md-0 col-md-8 col-sm-12 mx-auto">
+                    <button  type="button" id="submit" class="btn col-5 btn-primary">保存修改</button>
+                    <a  href="/" class="btn col-5 btn-dark">返回首页</a>
+                </div>
+            </div>
+        </form>
+        <div class="alert alert-primary">
+             提示：修改完资料一定记得点保存，不然是不会进行保存的! 密码不可以带中文或者特殊符号,为空则不修改。
+        </div>
+    </div>
    
-</div>
-<!-- 底部 -->
-<%- include("../layout/footer.ejs") %>
+    <script>
+
+        $(function(){
+         
+            $("#File").on("change",async function(){
+
+                const files =  new FormData();
+                const file = this.files[0];
+              
+                if(file){
+                   files.append("file",file)
+                  let {code,msg,data} = await $axios({
+                       headers:{
+                           "content-type":"multipart/form-data"
+                       },
+                       data:files,
+                       url:"/api/uploads"
+                   })
+                   $("#imghead").attr("src",data);
+                   utils.showInfo({
+                       status:"success",
+                       msg:"上传成功",
+                   })
+                   $(this).val("")
+                   $("#proFile").val(data)
+                }else{
+                    utils.showInfo({
+                        status:"danger",
+                        msg:"文件为空"
+                    })
+                }
+            })
+           
+            $("#userName").focus(function(){
+                $(this).removeClass("is-invalid")
+            })
+            $("input[type='password']").focus(function(){
+                $("input[type='password']").removeClass("is-invalid")
+            })
+            
+            $("#submit").on("click",async function(e){
+                let userName = $("#userName");
+                if(userName.val().trim() == ""){
+                    userName.addClass("is-invalid");
+                    e.originalEvent.preventDefault()
+                    return ;
+                }
+                let pas = $("#password");
+                let pas1 = $("#password1")
+                if(pas.val() !== pas1.val()){
+                    $("input[type='password']").addClass("is-invalid").next().text("两次密码不一致")
+                    e.originalEvent.preventDefault()
+                    return ;
+                }
+                if(pas.val() !="" && pas1.val() !="" && !/[a-zA-Z0-9]{6,16}/.test(pas.val())){
+                    $("input[type='password']").addClass("is-invalid").next().text("请输入6到16位的数字或者字母！")
+                    e.originalEvent.preventDefault()
+                    return ;
+                }
+
+               let {code,data,msg} = await $axios({
+                    url:"/api/users/updateUser",
+                    data:$("#form").serialize(),
+                    headers:{
+                        "content-type":"application/x-www-form-urlencoded"
+                    }
+                })
+                
+                utils.showInfo({
+                    status:code == 1 ? "info" : "danger",
+                    msg
+                })
+                code == 1 && $("input[type='password']").val("")
+            })
+        })
+    </script>
+    <!-- 底部 -->
+    <%- include("../layout/footer.ejs") %>

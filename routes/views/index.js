@@ -4,18 +4,22 @@
  * @Author: fax
  * @Date: 2021-06-09 08:59:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 16:25:17
+ * @LastEditTime: 2021-06-11 15:50:21
  */
 
 
 const router = require('koa-router')();
-const {viewLoginCheck} = require("../../middleware/loginCheck")
+const {viewLoginCheck} = require("../../middleware/loginCheck");
+const citys = require("../../dataJson/city");
 const {
   registerUser,
   isExistUser
 }  = require("../../contorller/users");
 
-router.get('/', viewLoginCheck,async (ctx, next)=> {
+//登录校验
+router.use("/",viewLoginCheck);
+
+router.get('/',async (ctx, next)=> {
   await ctx.render("index",{})
 })
 
@@ -28,7 +32,12 @@ router.get('/register', async (ctx, next)=> {
 })
 
 router.get('/userInfo', async (ctx, next)=> {
-  await ctx.render("views/userInfo",{})
+  console.log(ctx.session.userInfo)
+  await ctx.render("views/userInfo",{
+    userInfo:ctx.session.userInfo || false,
+    citys,
+    genders:["男","女","保密"]
+  })
 })
 
 

@@ -4,7 +4,7 @@
  * @Author: fax
  * @Date: 2021-06-10 10:47:17
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 11:27:26
+ * @LastEditTime: 2021-06-11 14:23:09
  */
 const koaBody = require("koa-body");
 const fs = require("fs");
@@ -55,7 +55,9 @@ const fileConf = {
             // 获取文件后缀
             const ext = getUploadFileExt(file.name);
             // 重新覆盖 file.path 属性
-            file.path = `${filePath}/${getUploadFileName(ext)}`;
+            let fliename = getUploadFileName(ext);
+            file.path = `${filePath}\\${fliename}`;
+            file.currentPath = "uploads\\"+fliename
         },
         onError: (err) => {
             console.log(err);
