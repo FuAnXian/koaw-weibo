@@ -32,7 +32,7 @@
         }
     };
 
-    owner.showInfo = function({msg,duration,status}){
+    owner.showInfo = function({msg,duration,status,complete}){
       $("#info")?.remove();
        $("body").append(`
        <div id="info">
@@ -44,13 +44,29 @@
        duration  = duration || 1500
         $("#info").slideDown();
         setTimeout(()=>{
-            this.hideInfo()
+            this.hideInfo();
+            typeof complete == "function" && complete();
         },duration)
     };
 
     owner.hideInfo = function(){
         $("#info").slideUp()
-    }
+    };
+    
+    //改变用户头像
+    owner.setHeadImg = function(url){
+        localStorage.setItem("userHeadeImg",url);
+        $("#userHead").attr("src",url);
+    };
 
-})(window.utils = {})
+    //改变用户头像
+    owner.initHeadImg = function(){
+        let url =  localStorage.getItem("userHeadeImg") || "/img/youxiang.jpg";
+        $("#userHead").attr("src",url);
+    };
+
+
+})(window.utils = {});
+
+
 

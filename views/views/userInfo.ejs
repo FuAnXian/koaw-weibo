@@ -24,7 +24,7 @@
 <!-- 头部 -->
 <%- include("../layout/header.ejs") %>
     <div class="container px-md-0 px-2">
-        <form  class="mt-0 mt-md-4 py-md-4 py-2 px-md-4  px-2" id="form">
+        <form  class="mt-3 mt-md-4 py-md-4 py-2 px-md-4  px-2" id="form">
             <div class="h5">头像</div>
             <hr />
             <div class="ml-3 ">
@@ -37,9 +37,6 @@
                         <button  type="button" class="btn btn-info btn-sm ml-3">更换头像</button>
                           <input type="file" accept="image/*"  id="File">
                     </div>
-                  
-                        
-                 
                     <input type="text" name="proFile" value="<%= userInfo.proFile%>" class="d-none" id="proFile">
                 </div>
             </div>
@@ -108,7 +105,7 @@
                 </div>
                 <div class="form-gruop d-flex justify-content-between pb-2 pb-md-0 col-md-8 col-sm-12 mx-auto">
                     <button  type="button" id="submit" class="btn col-5 btn-primary">保存修改</button>
-                    <a  href="/" class="btn col-5 btn-dark">返回首页</a>
+                    <button  type="button" id="signOut" class="btn col-5 btn-danger">退出登录</button>
                 </div>
             </div>
         </form>
@@ -120,12 +117,11 @@
     <script>
 
         $(function(){
-         
+           
+            //上传文件
             $("#File").on("change",async function(){
-
                 const files =  new FormData();
-                const file = this.files[0];
-              
+                const file = this.files[0];              
                 if(file){
                    files.append("file",file)
                   let {code,msg,data} = await $axios({
@@ -156,7 +152,23 @@
             $("input[type='password']").focus(function(){
                 $("input[type='password']").removeClass("is-invalid")
             })
-            
+
+            //退出登录
+            $("#signOut").click(async function(){
+              let {code,msg} = await $axios({
+                    url:"/api/users/signOut",
+                    data:{}
+                })
+                utils.showInfo({
+                    msg,
+                    status:"info",
+                    complete(){
+                        location.href = "/login"
+                    }
+                })
+            })
+
+            //修改信息
             $("#submit").on("click",async function(e){
                 let userName = $("#userName");
                 if(userName.val().trim() == ""){
@@ -184,7 +196,7 @@
                         "content-type":"application/x-www-form-urlencoded"
                     }
                 })
-                
+                utils.setHeadImg(data)
                 utils.showInfo({
                     status:code == 1 ? "info" : "danger",
                     msg

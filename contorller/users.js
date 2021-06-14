@@ -7,13 +7,7 @@
  */
 const { Users } = require("../db/model/index");
 const { ModelError, ModelSuccess , ModelSeqError} = require("../routes/model/Response");
-const { static } = require("../config/index")
-const {
-    existUser,
-    suc
-} = require("../routes/model/code");
-const { use } = require("../app");
-
+const { static } = require("../config/index");
 
 /**
  *  获取用户信息
@@ -39,7 +33,7 @@ const getUserInfo = async (where) => {
 const isExistUser = async (userName) => {
     let info = await getUserInfo({ userName })
     if (info) {
-        return new ModelError(isExistUser);
+        return new ModelError({code:0,msg:"此用户已经存在！"});
     }
     return new ModelSuccess()
 };
@@ -78,7 +72,7 @@ const userLogin = async (ctx, userName, password) => {
    
     if (info != null) {
         ctx.session.userInfo = info;
-        return new ModelSuccess({ msg: "登录成功" })
+        return new ModelSuccess({ msg: "登录成功" ,data:info.proFile})
     }
     return new ModelError({ msg: "账号或密码不正确！" });
 }
@@ -118,19 +112,28 @@ const userLogin = async (ctx, userName, password) => {
     }
     
     try{
-        let res =  await Users.update(data,{
+       await Users.update(data,{
             where:{id:ctx.session.userInfo.id}
         })
         ctx.session.userInfo = await getUserInfo({userName});
-        return new ModelSuccess({msg:"修改成功！"})
+        return new ModelSuccess({msg:"修改成功！",data:proFile})
     }catch(e){
       return new ModelSeqError(e)
     }
-  }
+  };
+  
+  //退出登录
+  const signOut = (ctx)=>{
+      ctx.session.userInfo = null;
+      return new ModelSuccess({
+          msg:"退出成功"
+      })
+  };
 module.exports = {
     isExistUser,
     getUserInfo,
     registerUser,
     userLogin,
-    updateUserInfo
+    updateUserInfo,
+    signOut
 }

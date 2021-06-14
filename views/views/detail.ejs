@@ -1,0 +1,198 @@
+<%- include("../layout/header.ejs",{ hideNav:true }) %>
+  <style>
+    .div,
+    .container,
+    .container-md {
+
+      background-color: #fff !important;
+    }
+
+    /* table 样式 */
+    table {
+      border-top: 1px solid #ccc;
+      border-left: 1px solid #ccc;
+    }
+
+    table td,
+    table th {
+      border-bottom: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+      padding: 3px 5px;
+    }
+
+    table th {
+      border-bottom: 2px solid #ccc;
+      text-align: center;
+    }
+
+    /* blockquote 样式 */
+    blockquote {
+      display: block;
+      border-left: 8px solid #d0e5f2;
+      padding: 5px 10px;
+      margin: 10px 0;
+      line-height: 1.4;
+      font-size: 100%;
+      background-color: #f1f1f1;
+    }
+
+    /* code 样式 */
+    code {
+      display: inline-block;
+      *display: inline;
+      *zoom: 1;
+      background-color: #f1f1f1;
+      border-radius: 3px;
+      padding: 3px 5px;
+      margin: 0 3px;
+    }
+
+    pre code {
+      display: block;
+    }
+
+    /* ul ol 样式 */
+    ul,
+    ol {
+      margin: 10px 0 10px 20px;
+    }
+
+    .image {
+      height: 50px;
+      width: 50px;
+      overflow: hidden;
+      border: solid 1px #f1f1f1;
+    }
+  </style>
+  <div class="div">
+    <div class="d-flex container-md py-2 align-items-center">
+      <div class="image mr-2 rounded-circle">
+        <img src="<%= data.userInfo.proFile%>" alt="">
+      </div>
+
+      <div>
+        <div>
+          <%= data.userInfo.userName%>
+        </div>
+        <small class="text-secondary">
+          <%= data.count%> 篇博客文章
+        </small> >
+      </div>
+
+      <div class="ml-auto">
+        <button type="button" class="btn btn-primary mr-2">关注TA</button>
+        <a href="/" class="btn btn-dark">返回首页</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="h10 border" style="border-bottom: none !important;"></div>
+
+  <div class="container-md  py-3  ">
+    <h4 class="text-left text-justify">
+      <%= data.title%>
+    </h4>
+    <small class="text-secondary">
+      <%= data.createdAt%>
+    </small>
+    <hr>
+    <div>
+      <%- data.content %>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-between">
+      <div> <span class=" text-primary h5">
+          <%= data.comments.length%>
+        </span> 条评论</div>
+      <div class="text-secondary">我来说两句</div>
+    </div>
+    <input type="text" id="text" placeholder="输入你想说的......" class="form-control my-2">
+    <div class="d-flex mt-2">
+      <button type="button" disabled id="confirm" style="min-width: 150px;"
+        class="btn ml-auto bnt-priamry btn-success">评论</button>
+    </div>
+
+    <div id="comments">
+      <% data.comments.forEach(item=>{ %>
+        <hr>
+        <div class="media">
+          <img src="<%= item.proFile%>" class="align-self-start mr-3 rounded-circle"
+            style="width:35px;overflow: hidden;">
+          <div class="media-body">
+            <div class="my-1 d-flex text-secondary align-items-center">
+              <span>
+                <%= item.userName %>
+              </span>
+              <small class="ml-auto">
+                <%= item.time %>
+              </small>
+            </div>
+            <div class="media my-2">
+              <div class="media-body">
+                <small>
+                  <%= item.text%>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%})%>
+    </div>
+    <!-- <div class="mt-2" id="container"></div> -->
+  </div>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+  <script type="text/javascript">
+
+    $(function () {
+      // const E = window.wangEditor
+      // const editor = new E("#container")
+      // // 或者 const editor = new E(document.getElementById('div1'))
+      // editor.create()
+
+      $("#text").on("input", function () {
+        let is = $(this).val().trim() == "";
+        console.log(is)
+        $("#confirm").prop("disabled", is)
+      })
+
+      //评论
+      $("#confirm").click(async function () {
+        let text = $("#text").val();
+        let lastLength = window.location.pathname.lastIndexOf("/") + 1;
+        let blogsId = window.location.pathname.substring(lastLength);
+        let { data, code, msg } = await $axios({
+          url: "/api/comments/created",
+          data: {
+            text,
+            blogsId,
+          },
+          loading: false,
+        })
+ 
+        $("#comments").before(`
+        <hr>
+      <div class="media">
+        <img src="${data.proFile}" class="align-self-start mr-3 rounded-circle" style="width:35px;overflow: hidden;">
+        <div class="media-body">
+          <div class="my-1 d-flex text-secondary align-items-center">
+             <span>${data.userName}</span> 
+             <small class="ml-auto">${data.time}</small>
+            </div>
+          <div class="media my-2">
+            <div class="media-body">
+              <small>${data.text}</small>   
+            </div>
+          </div>
+        </div>
+      </div>
+        `);
+        $("#text").val("")
+        utils.showInfo({
+          status: "info",
+          msg
+        })
+      })
+    })
+  </script>
+  <%- include("../layout/footer.ejs") %>

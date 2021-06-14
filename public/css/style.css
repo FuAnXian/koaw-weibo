@@ -38,6 +38,13 @@ img{
 html,html body{
   background-color: #f1f1f1;
 }
+.h10{
+  width: 100%;
+  height: 10px;
+  background-color: #f1f1f1;
+  border-left: none;
+  border-right: none;
+}
 
 .loader {
   border: 4px solid #383838;
@@ -112,4 +119,7 @@ html,html body{
   opacity: 0;
   left: 0;
   top: 0;
+}
+p,div{
+  word-break: break-all
 }

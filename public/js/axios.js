@@ -28,6 +28,7 @@
         return response.data
     },
     error => {
+        $("#loading").fadeOut();
         return Promise.reject(error.response.status) // 返回接口返回的错误信息
     });
 
@@ -39,8 +40,8 @@
         return request;
     })
     window.$axios = function (params) {
-        Object.assign(config, params);
-        return axios(config)
+        let request = Object.assign({},config, params);
+        return axios(request)
     };
 
 })(window.axios || {})

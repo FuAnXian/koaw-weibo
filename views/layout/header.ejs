@@ -48,7 +48,7 @@
         <nav class="navbar text-white navbar-expand-md navbar-dark" style="background-color: #24292e;">
           
          <a class="navbar-brand " href="/userInfo">
-           <img class="rounded-circle" src="/img/touxiang.jpg" style="width:40px;height: 40px;" alt="">
+           <img id="userHead" class="rounded-circle" src="/img/touxiang.jpg" style="width:40px;height: 40px;" alt="">
          </a>
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
            <span class="navbar-toggler-icon"></span>
@@ -57,24 +57,25 @@
          <div class="collapse navbar-collapse" id="collapsibleNavbar">
            <ul class="navbar-nav mr-auto mt-2 mt-lg-0 mt-md-0 ">
              <li class="nav-item">
-               <a class="nav-link" href="#">首页</a>
+               <a class="nav-link" href="/">首页</a>
              </li>
              <li class="nav-item">
-               <a class="nav-link" href="#">文章</a>
+               <a class="nav-link" href="/creation">创作</a>
              </li>
              <li class="nav-item">
-               <a class="nav-link" href="#">关注</a></a>
+               <a class="nav-link" href="/article">关注</a></a>
              </li> 
            </ul>
 
            <form class="form-inline my-2 my-lg-0">
-            <div class="input-group">
+            <div class="input-group" style="width: 100%;">
               <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="功能开发中....(搜不了)">
               <div class="input-group-append">
                 <button class="btn btn-info" type="button">搜索</button>
               </div>
             </div>
           </form>
+
          </div> 
        </nav>
       </div>

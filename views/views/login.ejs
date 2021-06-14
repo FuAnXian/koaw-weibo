@@ -99,29 +99,38 @@
                         .text("请输入6到12字母或者数字")
                 }
             })
-
-            $("#submit").on("click", async function () {
+            const login = async () => {
                 $("#password").trigger('blur');
                 $("#user").trigger('blur');
                 if (isPassword && isUser) {
-                    let { code, msg } = await $axios({
+                    let { code, msg,data } = await $axios({
                         method: "post",
                         data: {
-                            userName:$("#user").val(),
-                            password:$("#password").val()
+                            userName: $("#user").val(),
+                            password: $("#password").val()
                         },
                         url: "/api/users/login",
                         loading: false
                     });
                     utils.showInfo({
-                        status:code == 1 ? "success" : "danger",
+                        status: code == 1 ? "success" : "danger",
                         msg
                     })
-                    if(code == 1){
-                        setTimeout(()=>{location.href = "/"},1000);
+                    if (code == 1) {
+                        utils.setHeadImg(data);
+                        setTimeout(() => { location.href = "/" }, 1000);
                     }
                 }
-            })
+            }
+
+            $("#submit").on("click", login);
+
+            $(document).keyup(function (event) {
+                if (event.keyCode == 13) {
+                    login()
+                }
+            });
+
         })
     </script>
     <%- include("../layout/footer.ejs") %>

@@ -24,6 +24,9 @@ const {middlewareError} = require("./middleware/error")
 //api
 const ApiUsers = require('./routes/api/users');
 const ApiUpload = require("./routes/api/upload");
+const ApiBlogs = require("./routes/api/blogs")
+const ApiComments = require("./routes/api/comments")
+
 
 //配置
 const {REDIS} = require("./config/index")
@@ -37,7 +40,9 @@ onerror(app)
 app.use(middlewareError)
 
 // middlewares post json
-app.use(koaBody())
+app.use(koaBody({
+  jsonLimit:1024*1024 * 50
+}))
 app.keys = ["HSFS$_dd##@@sddssd155"];
 app.use(session({
   key:"sid", //客户端cookie属性key
@@ -65,6 +70,8 @@ app.use(views(__dirname + '/views', {
 app.use(index.routes(), index.allowedMethods())
 app.use(ApiUsers.routes(),ApiUsers.allowedMethods())
 app.use(ApiUpload.routes(),ApiUpload.allowedMethods())
+app.use(ApiBlogs.routes(),ApiBlogs.allowedMethods())
+app.use(ApiComments.routes(),ApiComments.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

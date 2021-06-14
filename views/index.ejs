@@ -8,31 +8,131 @@
 -->
 <!-- 头部 -->
 <%- include("./layout/header.ejs") %>
+  <style>
+    .media-body {
+      cursor: pointer;
+      color: #000;
+      text-decoration: none;
+    }
 
-  <div class="d-flex py-3 px-md-3">
-    <div class="col-md-8 col-sm-12">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <div class="media">
-            <img src="https://static.runoob.com/images/mobile-icon.png" class="align-self-start mr-3" style="width:35px">
-            <div class="media-body">
-              <div class="my-1 h5"><strong>标题</strong></div>
-              <div class="media my-2">
-                <div class="media-body">     
-                  <p>学的不仅是技术，更是梦想！！！</p>      
-                </div>
-                <img src="https://static.runoob.com/images/mobile-icon.png" alt="图片"
-                 class="ml-3 mt-3 rounded-circle" style="width:100px;">
+    li img {
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+    }
+
+    .media-body:hover {
+      text-decoration: none;
+    }
+
+    a.text-decoration-none:hover .h5 {
+      color: var(--primary) !important;
+    }
+
+    .text-clamp3 {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+    }
+    .text-clamp2 {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+
+    .cover-image {
+      position: absolute !important;
+      right: 0;
+      top: 2px;
+      width: 180px;
+      height: 100px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .list-text {
+      width: calc(100% - 200px);
+      margin-right: 20px;
+    }
+
+    .list-item {
+      list-style: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    }
+    @media (max-width:768px) {
+
+      html,
+      body {
+        background-color: #fff !important;
+      }
+
+      .list-text {
+        width: calc(100% - 140px);
+        margin-right: 10px;
+      }
+
+      .cover-image {
+        width: 130px;
+      }
+
+    }
+    .min-heade{
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      overflow: hidden;
+      margin-right: 15px;
+    }
+
+  </style>
+  <div class="d-flex px-md-3">
+    <div class="col-md-8 col-sm-12" style="background-color: #fff;">
+      <ul class="list-group px-3 px-md-1">
+        <% data.forEach((item,index)=>{%>
+
+          <li class="list-item py-4" data-id="<%= item.id %>">
+            <a href="/detail/<%=item.id%> style="display: block;" class="text-decoration-none" target="_blank"
+              rel="noopener noreferrer">
+              <div class="mb-2 text-clamp2 h5 text-dark">
+                <%=item.title%>
               </div>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item">Third item</li>
+              <div style="position: relative;">
+                <div class="list-text">
+                  <div class="text-secondary  text-clamp3 text-justify">
+                    <%=item.content%>
+                  </div>
+                  <div style="font-size:14px;margin-top: 5px;" class="align-items-center d-flex">
+                    <div class="min-heade rounded-circle">
+                      <img src="<%= item.userInfo.proFile%>" alt="">
+                    </div>         
+                      <span class="text-dark mr-2"><%= item.userInfo.userName%></span>                    
+                      <span class="text-secondary"><%= item.createdAt%></span>               
+                  </div>
+                </div>
+
+                <div class="cover-image rounded">
+                  <img src="<%= item.image%>" alt="">
+                </div>
+              </div>
+
+            
+            </a>
+          </li>
+
+          <%})%>
       </ul>
     </div>
     <div class="col-4 d-none d-md-block d-lg-block d-xl-block ">
- 
+
     </div>
   </div>
+  <script>
+    $(function () {
 
+    })
+  </script>
   <%- include("./layout/footer.ejs") %>

@@ -11,7 +11,9 @@ const fs = require("fs");
 const path = require("path");
 const uuid = require("node-uuid")
 const filePath = path.resolve(__dirname, "../public/uploads");
-
+const {
+  static
+} = require("../config/index")
 //不存在则创建
 if (!fs.existsSync(filePath)) {
     fs.mkdirSync(filePath)
@@ -57,7 +59,7 @@ const fileConf = {
             // 重新覆盖 file.path 属性
             let fliename = getUploadFileName(ext);
             file.path = `${filePath}\\${fliename}`;
-            file.currentPath = "uploads\\"+fliename
+            file.currentPath = "/uploads/"+fliename;
         },
         onError: (err) => {
             console.log(err);

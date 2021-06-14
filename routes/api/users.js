@@ -13,7 +13,8 @@ const {
   registerUser,
   isExistUser,
   userLogin,
-  updateUserInfo
+  updateUserInfo,
+  signOut
 }  = require("../../contorller/users");
 
 router.prefix("/api/users")
@@ -50,7 +51,7 @@ router.post('/isExistUser', async (ctx, next)=> {
 
 //退出登录
 router.post("/signOut",async (ctx,next)=>{
-      
+  ctx.body =  signOut(ctx);
 })
 
 //编辑用户

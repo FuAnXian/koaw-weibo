@@ -119,8 +119,10 @@
                     method: "POST"
                 })
                 let { valid, invalid, unvalid, uninvalid } = validClass(code == 1);
+
                 userDom.removeClass(unvalid).addClass(valid);
-                userDom.next().removeClass(invalid).addClass(uninvalid).find(".msg").text(code == 1 ? "" : msg)
+                
+                userDom.next().removeClass(uninvalid).addClass(invalid).find(".msg").text(code == 1 ? "" : msg)
             }, 500);
 
             let userVaild = false;
@@ -132,7 +134,7 @@
                 }else{
                     $("#user").removeClass("is-valid").addClass("is-invalid")
                    .next().removeClass("valid-feedback").addClass("invalid-feedback")
-                   .find(".msg").text("请输入6到12位数的账号")
+                   .find(".msg").text("请输入2到20位数的账号")
                 }              
             });
 

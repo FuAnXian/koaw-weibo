@@ -30,9 +30,10 @@ let REDIS = {
   expire: 1000 * 60 *60 *24
 };
 
-const static = {
+let static = {
   CRYPTOKEY:"SD%$DSDS_())DDSSD!",
-  PROFLE:"/img/touxiang.jpg"
+  PROFLE:"/img/touxiang.jpg",
+  HOST:"127.0.0.1:3000"
 };
 //生产环境
 if (isProdcution) {
@@ -45,7 +46,9 @@ if (isProdcution) {
       min: 0,
       idle: 10000
     }
-  }
+  };
+
+  static.HOST = "https://haihai.xyz"
 }
 
 

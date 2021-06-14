@@ -1,8 +1,147 @@
-<!--
- * @Descripttion: 
- * @version: 
- * @Author: sueRimn
- * @Date: 2021-06-10 16:21:29
- * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 16:21:30
--->
+<%- include("../layout/header.ejs") %>
+  <style>
+    .uploads {
+      width: 60px;
+      height: 60px;
+      position: relative;
+    }
+ 
+    .imgshow a{
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .imgshow {
+      width: 60px;
+      height: 60px;
+      display: none;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .uploads::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 30px;
+      transform: translate(-50%, -50%);
+      border-left: 2px solid;
+    }
+
+    .uploads::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 30px;
+      transform: translate(-50%, -50%);
+      border-top: 2px solid;
+    }
+  </style>
+  <div class="container my-3  rounded border py-3 px-3 bg-white border">
+    <div class="row">
+
+      <div class="col-md-8 mb-2 col-12">
+        <label for="title" class="h5">标题</label> <strong class="text-danger">*</strong>
+        <textarea id="title" rows="2" class="form-control" placeholder="输入文章标题(255字内)"></textarea>
+      </div>
+
+      <div class="col-md-4  mb-2 col-12">
+        <label class="h5">封面图</label> <small class="text-info">(在首页标题右侧显示)</small>
+        <div class="d-flex">
+          <div class="imgshow mr-2">
+            <a href="/img/touxian.jpg" target="_blank" rel="noopener noreferrer"></a>
+          </div>
+          <input type="hidden" id="titleImg" />
+          <div class="uploads border rounded border-secondary" id="upload">
+            <input type="file" accept="image/*" id="file" class="form-control" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <span class="h5">内容</span> <strong class="text-danger">*</strong>
+    <div class="mt-2" id="container"></div>
+    <div class="d-flex mt-3 justify-content-end">
+      <button type="button" id="confirm" class="btn mr-3 btn-info">发布内容</button>
+      <button type="button" id="reset" class="btn btn-danger">清空内容</button>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      const E = window.wangEditor
+      const editor = new E("#container")
+      // 或者 const editor = new E(document.getElementById('div1'))
+      editor.config.uploadImgServer = '/api/editorUpload';
+
+      editor.create();
+
+      $("#file").change(async function () {
+        const file = this.files[0];
+        const formData = new FormData();
+        if (file) {
+          formData.append("file", file);
+          let { data,msg } = await $axios({
+            headers: {
+              "content-type": "multipart/form-data"
+            },
+            url: "/api/uploads",
+            data: formData
+          })
+          utils.showInfo({
+            msg,
+            status:"info"
+          })
+          if (data) {
+            $("#titleImg").val(data);
+            $(".imgshow").show().css("background-image","url('"+data+"')").find("a").attr("href", data)
+          }
+        }
+      })
+      
+      //发布
+      $("#confirm").click(async function () {
+        let content = editor.txt.html();
+        let image = $("#titleImg").val();
+        let title = $("#title").val();
+       
+        if(content.length == 0 || content == ""){
+          utils.showInfo({
+            status:"danger",
+            msg:"内容不能为空"
+          })
+          return;
+        }
+        if(title.length == 0 || title == ""){
+          utils.showInfo({
+            status:"danger",
+            msg:"标题不能为空"
+          })
+          return;
+        }
+       let {code,msg} = await $axios({
+          url:"/api/blogs/created",
+          headers: { 'content-type': 'application/json;charset=utf-8' },
+          data:{
+            content,
+            image,
+            title
+          }
+        })
+        utils.showInfo({
+            status:"info",
+            msg:"发布成功！"
+          })
+      });
+
+      $("#reset").click(function () {
+
+      });
+
+    })
+  </script>
+  <%- include("../layout/footer.ejs") %>
