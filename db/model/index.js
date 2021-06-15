@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-09 08:59:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-09 11:00:40
+ * @LastEditTime: 2021-06-15 10:43:03
  */
 const Users = require("./users");
 const Blogs = require("./blogs");
@@ -28,6 +28,7 @@ Comments.belongsTo(Blogs,{
     foreignKey:"blogsId",
     as:"comments"
 })
+
 
 //同步表
 !(async ()=>{

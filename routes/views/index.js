@@ -4,7 +4,7 @@
  * @Author: fax
  * @Date: 2021-06-09 08:59:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-11 15:50:21
+ * @LastEditTime: 2021-06-15 17:07:40
  */
 
 
@@ -12,10 +12,7 @@ const router = require('koa-router')();
 const { viewLoginCheck } = require("../../middleware/loginCheck");
 const citys = require("../../dataJson/city");
 const {createdTime} = require("../../utils/time")
-const {
-  registerUser,
-  isExistUser
-} = require("../../contorller/users");
+const {formattingPage} = require("../../utils/paging")
 const {
   getBlogs,
   getAllBlogs,
@@ -26,15 +23,26 @@ const {
 router.use("/", viewLoginCheck);
 
 router.get('/', async (ctx, next) => {
+  const {pageIndex}  = ctx.query;
+
   let {data} = await getAllBlogs({
     where: {},
+    offset:0,
+    limit:10
   });
-  data = data.map(item => item.dataValues);
-  data.map(item => {
-   item.createdAt =  createdTime(item.createdAt)
-  })
+  console.log(pageIndex)
+  let page = formattingPage({
+    count:data.count,
+    limit:10,
+    pageNum:5,
+    current:pageIndex*1
+  });
+  
+  console.log(page)
+  
   await ctx.render("index", {
-    data
+    data:data.rows,
+    page
   })
 })
 
@@ -47,7 +55,6 @@ router.get('/register', async (ctx, next) => {
 })
 
 router.get('/userInfo', async (ctx, next) => {
-  console.log(ctx.session.userInfo)
   await ctx.render("views/userInfo", {
     userInfo: ctx.session.userInfo || false,
     citys,
@@ -57,7 +64,6 @@ router.get('/userInfo', async (ctx, next) => {
 
 //关注
 router.get('/article', async (ctx, next) => {
-  console.log(ctx.session.userInfo)
   await ctx.render("views/article", {
     userInfo: ctx.session.userInfo || false,
   })
@@ -73,7 +79,7 @@ router.get('/creation', async (ctx, next) => {
 //详情
 router.get("/detail/:id",async (ctx,next)=>{
   const id = ctx.params.id;
-
+   
   let {data} = await getBlogs(id);
 
   let content = data.dataValues;
@@ -83,7 +89,7 @@ router.get("/detail/:id",async (ctx,next)=>{
   
   // ctx.body = content
   await ctx.render("views/detail",{
-    data:content
+    data:content,
   })
 })
 

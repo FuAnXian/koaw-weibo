@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-06-15 09:58:20
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-06-15 10:28:22
+ */
 const sequelize = require("../db");
 const {createdTime} = require("../../utils/time")
 const {Model,DataTypes} = require("sequelize");
@@ -6,10 +14,15 @@ const { model } = require("../db");
 class Blogs extends Model{}
 
 Blogs.init({
-   content:{
-     type:DataTypes.TEXT,
+   contentText:{
+     type:DataTypes.STRING(350),
      allowNull:false,
-     comment:"博客内容"
+     comment:"博客内容文字"
+   },
+   contentHtml:{
+    type:DataTypes.TEXT,
+    allowNull:false,
+    comment:"博客内容html"
    },
    image:{
     type:DataTypes.STRING,

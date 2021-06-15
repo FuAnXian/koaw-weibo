@@ -88,7 +88,7 @@
 
   <div class="h10 border" style="border-bottom: none !important;"></div>
 
-  <div class="container-md  py-3  ">
+  <div class="container-md  py-3">
     <h4 class="text-left text-justify">
       <%= data.title%>
     </h4>
@@ -97,7 +97,7 @@
     </small>
     <hr>
     <div>
-      <%- data.content %>
+      <%- data.contentHtml %>
     </div>
     <hr>
     <div class="d-flex justify-content-between">
@@ -140,15 +140,13 @@
     </div>
     <!-- <div class="mt-2" id="container"></div> -->
   </div>
-
+  <div class="h10 border" style="border: none !important;"></div>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
   <script type="text/javascript">
 
     $(function () {
-      // const E = window.wangEditor
-      // const editor = new E("#container")
-      // // 或者 const editor = new E(document.getElementById('div1'))
-      // editor.create()
+      $("table").addClass("table	table-striped");
+      $("thead").addClass("thead-dark")
 
       $("#text").on("input", function () {
         let is = $(this).val().trim() == "";
@@ -159,8 +157,7 @@
       //评论
       $("#confirm").click(async function () {
         let text = $("#text").val();
-        let lastLength = window.location.pathname.lastIndexOf("/") + 1;
-        let blogsId = window.location.pathname.substring(lastLength);
+        let blogsId = window.location.pathname.match(/\d+/)[0];
         let { data, code, msg } = await $axios({
           url: "/api/comments/created",
           data: {

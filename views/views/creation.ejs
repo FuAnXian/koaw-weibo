@@ -105,11 +105,13 @@
       
       //发布
       $("#confirm").click(async function () {
-        let content = editor.txt.html();
+        let contentHtml = editor.txt.html();
+        let contentText = editor.txt.text();
+
         let image = $("#titleImg").val();
         let title = $("#title").val();
-       
-        if(content.length == 0 || content == ""){
+
+        if(contentText.length == 0 || contentText == ""){
           utils.showInfo({
             status:"danger",
             msg:"内容不能为空"
@@ -127,7 +129,7 @@
           url:"/api/blogs/created",
           headers: { 'content-type': 'application/json;charset=utf-8' },
           data:{
-            content,
+            contentHtml,contentText,
             image,
             title
           }

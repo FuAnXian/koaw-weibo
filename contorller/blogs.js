@@ -10,8 +10,8 @@ const {Sequelize} = require("sequelize");
  * @param {string} title  标题
  * @returns Model
  */
-const createdBlogs = async({userId,content,image,title})=>{
-  if(content == "" || !content){
+const createdBlogs = async({userId,contentText,contentHtml,image,title})=>{
+  if(contentText == "" || !contentText){
     return new ModelError({msg:"内容为空"});
   }
   if(title == "" || !title){
@@ -21,7 +21,7 @@ const createdBlogs = async({userId,content,image,title})=>{
     try{
       await Blogs.create({
         userId,
-        content,
+        contentHtml,contentText:contentText.substring(0,350),
         image: image || "",
         title:title || "",
       })
@@ -36,10 +36,12 @@ const createdBlogs = async({userId,content,image,title})=>{
  * @param {*} params 查询条件 
  * @returns 
  */
-const getAllBlogs = async ({where,})=>{
+const getAllBlogs = async ({where={},offset=0,limit=10})=>{
 
-  let data = await Blogs.findAll({
+  let { count, rows }  = await Blogs.findAndCountAll({
     where,
+    offset,
+    limit,
     order:[
       ['createdAt', 'DESC'],
     ],
@@ -54,7 +56,8 @@ const getAllBlogs = async ({where,})=>{
       }
     ]
   })
-  return new ModelSuccess({msg:"获取成功",data:data})
+
+  return new ModelSuccess({msg:"获取成功",data:{count,rows:rows.map(item => item.dataValues)}})
 }
 
 /**

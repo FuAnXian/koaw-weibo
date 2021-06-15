@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-06-15 09:58:20
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-06-15 10:39:18
+ */
 
 const {Model,DataTypes} = require("sequelize");
 const sequelize = require("../db");
@@ -64,6 +72,12 @@ Comments.init({
     set(value) {
       throw new Error('不要尝试设置 `fullName` 的值!');
     }
+  },
+  give:{
+    type:DataTypes.INTEGER,
+    allowNull:true,
+    defaultValue:0,
+    comment:"点赞数量"
   }
 },{
   sequelize

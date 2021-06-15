@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-08 09:28:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-10 10:09:40
+ * @LastEditTime: 2021-06-15 15:00:16
  */
 
 const isProdcution = process.env.NODE_ENV == 'production';
@@ -21,7 +21,9 @@ let MYSQL = {
     timezone: '+08:00', //改为标准时区
     host: "localhost",
     dialect: "mysql",// 数据库类型,
-    logging:()=>{} //不打印sql语句日志
+    logging:(log)=>{
+      
+    } //不打印sql语句日志
   }
 };
 let REDIS = {
@@ -47,7 +49,6 @@ if (isProdcution) {
       idle: 10000
     }
   };
-
   static.HOST = "https://haihai.xyz"
 }
 

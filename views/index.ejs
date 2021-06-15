@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-08 09:28:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-11 09:19:19
+ * @LastEditTime: 2021-06-15 14:53:14
 -->
 <!-- 头部 -->
 <%- include("./layout/header.ejs") %>
@@ -63,8 +63,9 @@
       list-style: none;
       border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     }
-    @media (max-width:768px) {
+    .list-item:last-child{ border-bottom:none;}
 
+    @media (max-width:768px) {
       html,
       body {
         background-color: #fff !important;
@@ -103,7 +104,7 @@
               <div style="position: relative;">
                 <div class="list-text">
                   <div class="text-secondary  text-clamp3 text-justify">
-                    <%=item.content%>
+                    <%=item.contentText%>
                   </div>
                   <div style="font-size:14px;margin-top: 5px;" class="align-items-center d-flex">
                     <div class="min-heade rounded-circle">
@@ -129,7 +130,14 @@
     <div class="col-4 d-none d-md-block d-lg-block d-xl-block ">
 
     </div>
+    
   </div>
+  <div class="mt-2 col-md-8 col-sm-12">
+    <%- include("./components/paging.ejs",{
+      page:page,
+    })%>
+  </div>
+ 
   <script>
     $(function () {
 
