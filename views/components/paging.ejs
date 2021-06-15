@@ -4,17 +4,17 @@
  * @Author: fax
  * @Date: 2021-06-08 09:28:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-15 17:27:55
+ * @LastEditTime: 2021-06-15 17:50:04
 -->
 
 <div class="d-flex">
     <div class=""></div>
     <ul class="pagination ml-auto">
-        <li class="page-item <%= page.first ? 'disabled' :'' %>"><a class="page-link" href="/?pageIndex=<%= page.active-1 %>">上一页</a></li>
+        <li class="page-item <%= page.first ? 'disabled' :'' %>"><a class="page-link" href="/?pageIndex=<%= 1 %>">首页</a></li>
         <%page.num.map((item)=>{%>
             <li class="page-item <%= item == page.active ? 'active' : ''%>"><a class="page-link" href="/?pageIndex=<%=item %>"><%= item %></a></li>
         <%})%>
-        <li class="page-item <%= page.last ? 'disabled' :'' %>"><a class="page-link" href="/?pageIndex=<%= page.active+1 %>">下一页</a></li>
+        <li class="page-item <%= page.last ? 'disabled' :'' %>"><a class="page-link" href="/?pageIndex=<%= page.sum %>">尾页</a></a></li>
     </ul>
 </div>
 

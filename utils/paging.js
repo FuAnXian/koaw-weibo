@@ -4,7 +4,7 @@
  * @Author: fax
  * @Date: 2021-06-15 15:31:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-15 17:45:25
+ * @LastEditTime: 2021-06-15 17:50:32
  */
 
 const { max } = require("../db/model/users");
@@ -42,6 +42,7 @@ const formattingPage = ({ count, current, limit, pageNum }) => {
 
     return {
         num,
+        sum:Max,
         active: current,
         last: current * limit >= count,
         first: current <= 1
