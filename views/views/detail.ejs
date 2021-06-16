@@ -116,8 +116,12 @@
       <% data.comments.forEach(item=>{ %>
         <hr>
         <div class="media">
-          <img src="<%= item.proFile%>" class="align-self-start mr-3 rounded-circle"
-            style="width:35px;overflow: hidden;">
+          <div class="align-self-start mr-3 rounded-circle"
+          style="width:30px;height:30px;overflow: hidden;">
+            <img src="<%= item.proFile%>"/>
+          </div>
+         
+
           <div class="media-body">
             <div class="my-1 d-flex text-secondary align-items-center">
               <span>
@@ -138,10 +142,10 @@
         </div>
         <%})%>
     </div>
-    <!-- <div class="mt-2" id="container"></div> -->
+
   </div>
   <div class="h10 border" style="border: none !important;"></div>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+ 
   <script type="text/javascript">
 
     $(function () {

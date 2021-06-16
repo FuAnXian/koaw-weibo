@@ -4,7 +4,7 @@
  * @Author: fax
  * @Date: 2021-06-09 08:59:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-15 17:07:40
+ * @LastEditTime: 2021-06-16 09:42:54
  */
 
 
@@ -23,25 +23,22 @@ const {
 router.use("/", viewLoginCheck);
 
 router.get('/', async (ctx, next) => {
-  const {pageIndex}  = ctx.query;
-
+  const pageIndex  = ctx.query.pageIndex || 1;
+  const limit = 4;
   let {data} = await getAllBlogs({
     where: {},
-    offset:0,
-    limit:10
+    offset:(pageIndex -1) * limit,
+    limit
   });
-  console.log(pageIndex)
   let page = formattingPage({
     count:data.count,
-    limit:10,
+    limit,
     pageNum:5,
     current:pageIndex*1
   });
   
-  console.log(page)
-  
   await ctx.render("index", {
-    data:data.rows,
+    data:data.rows.map(item =>{item.createdAt = createdTime(item.createdAt);return item}  ),
     page
   })
 })
@@ -79,15 +76,10 @@ router.get('/creation', async (ctx, next) => {
 //详情
 router.get("/detail/:id",async (ctx,next)=>{
   const id = ctx.params.id;
-   
   let {data} = await getBlogs(id);
-
   let content = data.dataValues;
   content.count = await  getCountBlogs(content.userInfo.id);
-
   content.createdAt = createdTime(content.createdAt);
-  
-  // ctx.body = content
   await ctx.render("views/detail",{
     data:content,
   })
