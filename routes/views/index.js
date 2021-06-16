@@ -24,7 +24,7 @@ router.use("/", viewLoginCheck);
 
 router.get('/', async (ctx, next) => {
   const pageIndex  = ctx.query.pageIndex || 1;
-  const limit = 4;
+  const limit = 5;
   let {data} = await getAllBlogs({
     where: {},
     offset:(pageIndex -1) * limit,
