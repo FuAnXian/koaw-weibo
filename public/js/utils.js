@@ -4,7 +4,7 @@
  * @Author: fax
  * @Date: 2021-06-09 11:01:41
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-11 15:02:55
+ * @LastEditTime: 2021-06-16 11:32:55
  */
 
 !(function(owner){
@@ -64,8 +64,6 @@
         let url =  localStorage.getItem("userHeadeImg") || "/img/youxiang.jpg";
         $("#userHead").attr("src",url);
     };
-
-
 })(window.utils = {});
 
 
