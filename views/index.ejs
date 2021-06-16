@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-08 09:28:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-16 17:41:06
+ * @LastEditTime: 2021-06-16 18:06:13
 -->
 <!-- 头部 -->
 <%- include("./layout/header.ejs") %>
@@ -96,7 +96,7 @@
         <% data.forEach((item,index)=>{%>
 
           <li class="list-item py-4" data-id="<%= item.id %>">
-            <a href="/detail/<%=item.id%> style="display: block;" class="text-decoration-none" target="_blank"
+            <a href="/detail/<%=item.id%>" style="display: block;" class="text-decoration-none" target="_blank"
               rel="noopener noreferrer">
               <div class="mb-2 text-clamp2 h5 text-dark">
                 <%=item.title%>

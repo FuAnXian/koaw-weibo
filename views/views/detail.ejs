@@ -174,7 +174,10 @@
         $("#comments").before(`
         <hr>
       <div class="media">
-        <img src="${data.proFile}" class="align-self-start mr-3 rounded-circle" style="width:35px;overflow: hidden;">
+        <div class="align-self-start mr-3 rounded-circle"
+          style="width:30px;height:30px;overflow: hidden;">
+          <img src="${data.proFile}"/>
+          </div>
         <div class="media-body">
           <div class="my-1 d-flex text-secondary align-items-center">
              <span>${data.userName}</span> 

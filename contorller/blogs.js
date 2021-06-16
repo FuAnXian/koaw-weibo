@@ -65,28 +65,36 @@ const getAllBlogs = async ({where={},offset=0,limit=10})=>{
  * @returns 
  */
 const getBlogs = async (id)=>{
-  let data = await Blogs.findOne({
-    where:{id},
-    order:[['comments', 'createdAt', 'desc']],
-    include:[
-      {
-        model:Users,
-        as:"userInfo",
-        attributes:{
-          exclude:["nickName","password","city"]
+  try{
+    let data = await Blogs.findOne({
+      where:{id},
+      order:[
+        ["contentHtml","asc"],
+    ],
+      include:[
+        {
+          model:Comments,
+          as:"comments",
+          limit:5,
+          attributes:{
+            exclude:["id","updatedAt"]
+          },
         },
-      },
-      {
-        model:Comments,
-        as:"comments",
-        limit:5,
-        attributes:{
-          exclude:["id","updatedAt"]
-        },
-      }
-    ]
-  })
-  return new ModelSuccess({msg:"获取成功",data:data})
+        {
+          model:Users,
+          as:"userInfo",
+          attributes:{
+            exclude:["nickName","password","city"]
+          },
+        }
+      ]
+    })
+    return new ModelSuccess({msg:"获取成功",data:data})
+  }catch(e){
+    console.log(e)
+    return new ModelSeqError(e)
+  }
+
 };
 
 

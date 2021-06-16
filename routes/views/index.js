@@ -4,7 +4,7 @@
  * @Author: fax
  * @Date: 2021-06-09 08:59:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-16 09:42:54
+ * @LastEditTime: 2021-06-16 18:16:00
  */
 
 
@@ -75,9 +75,10 @@ router.get('/creation', async (ctx, next) => {
 
 //详情
 router.get("/detail/:id",async (ctx,next)=>{
-  const id = ctx.params.id;
+  const id = ctx.params.id.match(/\d+/)[0];
   let {data} = await getBlogs(id);
   let content = data.dataValues;
+  console.log(content.comments)
   content.count = await  getCountBlogs(content.userInfo.id);
   content.createdAt = createdTime(content.createdAt);
   await ctx.render("views/detail",{
