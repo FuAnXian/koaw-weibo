@@ -51,8 +51,7 @@ const getAllBlogs = async ({where={},offset=0,limit=10})=>{
         as:"userInfo",
         attributes:{
           exclude:["nickName","id","password","city"]
-        },
-      
+        },     
       }
     ]
   })
@@ -66,7 +65,6 @@ const getAllBlogs = async ({where={},offset=0,limit=10})=>{
  * @returns 
  */
 const getBlogs = async (id)=>{
-
   let data = await Blogs.findOne({
     where:{id},
     order:[['comments', 'createdAt', 'desc']],
@@ -81,6 +79,7 @@ const getBlogs = async (id)=>{
       {
         model:Comments,
         as:"comments",
+        limit:5,
         attributes:{
           exclude:["id","updatedAt"]
         },

@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-06-11 09:06:55
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-11 09:10:58
+ * @LastEditTime: 2021-06-16 15:10:14
  */
 const {ModelError} = require("../routes/model/Response");
 
@@ -38,7 +38,6 @@ const apiLoginCheck = async (ctx,next)=>{
 const viewLoginCheck = async (ctx,next)=>{
   let length = ctx.url.indexOf("?");
   let url = length != -1 ? ctx.url.substring(0,length) : ctx.url;
-  console.log(url)
   if(exclude.includes(url) || ctx.session.userInfo){
     await next()
   }else{
