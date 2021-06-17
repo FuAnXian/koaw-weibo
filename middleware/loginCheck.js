@@ -21,7 +21,6 @@ const viewexclude = ["/login","/register","/isExistUser","/detail"];
 const apiLoginCheck = async (ctx,next)=>{
   let length = ctx.url.indexOf("?");
   let url = length != -1 ? ctx.url.substring(0,length) : ctx.url;
-  console.log(url)
   if(Apiexclude.includes(url) || ctx.session.userInfo){
     await next()
   }else{
@@ -35,9 +34,8 @@ const apiLoginCheck = async (ctx,next)=>{
  * @param {function} next 
  */
 const viewLoginCheck = async (ctx,next)=>{
-
-  await next();
-
+  console.log(new Date().toTimeString(),ctx.url,ctx.session.userInfo)
+   await next();
 };
 
 module.exports = {

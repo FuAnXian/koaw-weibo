@@ -67,6 +67,7 @@ app.use(views(__dirname + '/views', {
 
 
 // routes
+app.use(viewLoginCheck)
 app.use(index.routes(), index.allowedMethods())
 
 app.use(apiLoginCheck)
