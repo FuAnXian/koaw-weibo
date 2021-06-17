@@ -97,7 +97,7 @@ html,html body{
   top: 30px;
   min-width: 300px;
   display: none;
-  z-index: 999;
+  z-index: 9999;
   margin: 0 auto;
 }
 #info > div{

@@ -3,12 +3,12 @@
  * @Author: fax
  * @Date: 2021-06-09 10:26:26
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-11 16:43:21
+ * @LastEditTime: 2021-06-17 13:41:53
  */
 
 const router = require('koa-router')();
 const {decrypt,encrypto} = require("../../utils/encrypt");
-const {apiLoginCheck} = require("../../middleware/loginCheck")
+
 const {
   registerUser,
   isExistUser,
@@ -20,7 +20,7 @@ const {
 router.prefix("/api/users")
 
 //加密密码
-router.use("/",apiLoginCheck,async(ctx,next)=>{
+router.use("/",async(ctx,next)=>{
   let password = ctx.request.body.password
   if(password){
     ctx.request.body.password = encrypto(password)

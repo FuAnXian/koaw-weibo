@@ -9,7 +9,6 @@
 
 
 const router = require('koa-router')();
-const { viewLoginCheck } = require("../../middleware/loginCheck");
 const citys = require("../../dataJson/city");
 const {createdTime} = require("../../utils/time")
 const {formattingPage} = require("../../utils/paging")
@@ -19,8 +18,7 @@ const {
   getCountBlogs
 } = require("../../contorller/blogs")
 
-//登录校验
-router.use("/", viewLoginCheck);
+
 
 router.get('/', async (ctx, next) => {
   const pageIndex  = ctx.query.pageIndex || 1;
@@ -78,7 +76,6 @@ router.get("/detail/:id",async (ctx,next)=>{
   const id = ctx.params.id.match(/\d+/)[0];
   let {data} = await getBlogs(id);
   let content = data.dataValues;
-  console.log(content.comments)
   content.count = await  getCountBlogs(content.userInfo.id);
   content.createdAt = createdTime(content.createdAt);
   await ctx.render("views/detail",{

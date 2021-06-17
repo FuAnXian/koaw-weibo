@@ -18,11 +18,22 @@
     axios.interceptors.response.use(response => {
         //关闭loading
         $("#loading").fadeOut();
+    
+        //出错
         if(response.data.code == -1){
             utils.showInfo({
                 status:"warning",
                 msg:response.data.msg
             })
+            return Promise.reject(response.data)
+        }
+        //未登录
+        if(response.data.code == 0){
+            utils.showInfo({
+                status:"danger",
+                msg:response.data.msg
+            })
+            $("#loginModal").modal("show");
             return Promise.reject(response.data)
         }
         return response.data

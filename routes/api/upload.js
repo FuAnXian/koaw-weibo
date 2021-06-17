@@ -4,12 +4,13 @@
  * @Author: fax
  * @Date: 2021-06-11 14:02:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-11 14:45:16
+ * @LastEditTime: 2021-06-17 13:39:07
  */
 
 const router = require("koa-router")();
 const { ModelSuccess, ModelError } = require("../model/Response")
 const { uploadsFlie } = require("../../middleware/upload");
+
 
 //通用上传文件
 router.post("/api/uploads", uploadsFlie(), async (ctx, next) => {

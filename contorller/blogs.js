@@ -1,7 +1,7 @@
-const { Blogs, Users,Comments } = require("../db/model/index");
-const { ModelError, ModelSuccess , ModelSeqError} = require("../routes/model/Response");
+const { Blogs, Users, Comments } = require("../db/model/index");
+const { ModelError, ModelSuccess, ModelSeqError } = require("../routes/model/Response");
 const { static } = require("../config/index");
-const {Sequelize} = require("sequelize");
+const { Sequelize } = require("sequelize");
 /**
  *  创建博客
  * @param {integer} usersId 用户id
@@ -10,25 +10,25 @@ const {Sequelize} = require("sequelize");
  * @param {string} title  标题
  * @returns Model
  */
-const createdBlogs = async({userId,contentText,contentHtml,image,title})=>{
-  if(contentText == "" || !contentText){
-    return new ModelError({msg:"内容为空"});
+const createdBlogs = async ({ userId, contentText, contentHtml, image, title }) => {
+  if (contentText == "" || !contentText) {
+    return new ModelError({ msg: "内容为空" });
   }
-  if(title == "" || !title){
-    return new ModelError({msg:"标题为空"});
+  if (title == "" || !title) {
+    return new ModelError({ msg: "标题为空" });
   }
 
-    try{
-      await Blogs.create({
-        userId,
-        contentHtml,contentText:contentText.substring(0,350),
-        image: image || "",
-        title:title || "",
-      })
-      return new ModelSuccess({msg:"创建成功"})
-    }catch(e){
-      return new ModelSeqError(e)
-    }
+  try {
+    await Blogs.create({
+      userId,
+      contentHtml, contentText: contentText.substring(0, 350),
+      image: image || "",
+      title: title || "",
+    })
+    return new ModelSuccess({ msg: "创建成功" })
+  } catch (e) {
+    return new ModelSeqError(e)
+  }
 }
 
 /**
@@ -36,27 +36,27 @@ const createdBlogs = async({userId,contentText,contentHtml,image,title})=>{
  * @param {*} params 查询条件 
  * @returns 
  */
-const getAllBlogs = async ({where={},offset=0,limit=10})=>{
+const getAllBlogs = async ({ where = {}, offset = 0, limit = 10 }) => {
 
-  let { count, rows }  = await Blogs.findAndCountAll({
+  let { count, rows } = await Blogs.findAndCountAll({
     where,
     offset,
     limit,
-    order:[
+    order: [
       ['createdAt', 'DESC'],
     ],
-    include:[
+    include: [
       {
-        model:Users,
-        as:"userInfo",
-        attributes:{
-          exclude:["nickName","id","password","city"]
-        },     
+        model: Users,
+        as: "userInfo",
+        attributes: {
+          exclude: ["nickName", "id", "password", "city"]
+        },
       }
     ]
   })
 
-  return new ModelSuccess({msg:"获取成功",data:{count,rows:rows.map(item => item.dataValues)}})
+  return new ModelSuccess({ msg: "获取成功", data: { count, rows: rows.map(item => item.dataValues) } })
 }
 
 /**
@@ -64,37 +64,35 @@ const getAllBlogs = async ({where={},offset=0,limit=10})=>{
  * @prams {number} id 博客id 
  * @returns 
  */
-const getBlogs = async (id)=>{
-  try{
+const getBlogs = async (id) => {
+  try {
     let data = await Blogs.findOne({
-      where:{id},
-      order:[
-        ["contentHtml","asc"],
-    ],
-      include:[
+      where: { id },
+      order: [
+        ["comments","createdAt", "desc"],
+      ],
+      include: [
         {
-          model:Comments,
-          as:"comments",
-          limit:5,
-          attributes:{
-            exclude:["id","updatedAt"]
+          model: Users,
+          as: "userInfo",
+          attributes: {
+            exclude: ["nickName", "password", "city"]
           },
         },
         {
-          model:Users,
-          as:"userInfo",
-          attributes:{
-            exclude:["nickName","password","city"]
+          model: Comments,
+          as: "comments",
+          attributes: {
+            exclude: ["updatedAt"]
           },
-        }
+        },
       ]
     })
-    return new ModelSuccess({msg:"获取成功",data:data})
-  }catch(e){
+    return new ModelSuccess({ msg: "获取成功", data: data })
+  } catch (e) {
     console.log(e)
     return new ModelSeqError(e)
   }
-
 };
 
 
@@ -103,8 +101,8 @@ const getBlogs = async (id)=>{
  * @param {*} userId  用户id
  * @returns 
  */
-const getCountBlogs = async (userId)=>{
-  return  Blogs.count({
+const getCountBlogs = async (userId) => {
+  return Blogs.count({
     where: {
       userId
     }

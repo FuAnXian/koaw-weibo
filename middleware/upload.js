@@ -4,7 +4,7 @@
  * @Author: fax
  * @Date: 2021-06-10 10:47:17
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-06-11 14:23:09
+ * @LastEditTime: 2021-06-17 10:23:33
  */
 const koaBody = require("koa-body");
 const fs = require("fs");
@@ -33,7 +33,6 @@ const getUploadFileExt = (name)=>{
     }
     return name
 };
-
 
 /**
  *  根据文件类型随机生成地址 
